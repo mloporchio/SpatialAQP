@@ -18,4 +18,9 @@ public class Point implements Comparable<Point> {
 		int s = Double.compare(this.x, p.x);
 		return ((s != 0) ? s : Double.compare(this.y, p.y));
 	}
+
+	// Prints a human-readable string representing the point.
+	public String toString() {
+		return "(" + this.x + "," + this.y + ")";
+	}
 }

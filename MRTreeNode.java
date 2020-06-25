@@ -17,7 +17,8 @@ public class MRTreeNode implements Comparable<MRTreeNode> {
 	// Marks this node as a leaf.
 	public void makeLeaf(List<Point> data) {
 		this.MBR = Geometry.MBR(data);
-		this.hash = Hash.hashRectangle(this.MBR);
+		// The hash value of this node is the hash value of its points.
+		this.hash = Hash.hashPoints(data);
 		this.data = data;
 		this.children = null;
 	}
@@ -28,7 +29,8 @@ public class MRTreeNode implements Comparable<MRTreeNode> {
 		List<Rectangle> rects = new ArrayList<Rectangle>();
 		children.forEach((c) -> rects.add(c.MBR));
 		this.MBR = Geometry.enlarge(rects);
-		this.hash = Hash.hashRectangle(this.MBR);
+		// Given its children, compute the hash of this node.
+		this.hash = Hash.hashNode(children);
 		this.children = children;
 		this.data = null;
 	}

@@ -33,7 +33,7 @@ class Hash {
 	/**
 	 *	This function computes the hash value of a list of 2D points.
 	 */
-	public static byte[] hashPoints(ArrayList<Point> pts) {
+	public static byte[] hashPoints(List<Point> pts) {
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
 			ByteBuffer bb = ByteBuffer.allocate(16 * pts.size());
@@ -58,6 +58,28 @@ class Hash {
 		}
 		catch (Exception e) {
 			System.err.println("Something went wrong while hashing a rectangle!");
+			return null;
+		}
+	}
+
+	/**
+	 *	This function computes the hash value of a rectangle.
+	 */
+	public static byte[] hashNode(List<MRTreeNode> children) {
+		try {
+			MessageDigest digest = MessageDigest.getInstance("SHA-256");
+			ByteArrayOutputStream strm = new ByteArrayOutputStream();
+			// Read the content of all children.
+			for (MRTreeNode c : children) {
+				byte[] rbuf = ByteBuffer.allocate(64).putDouble(c.MBR.lx).
+				putDouble(c.MBR.ly).putDouble(c.MBR.ux).putDouble(c.MBR.uy).array();
+				strm.write(rbuf);
+				strm.write(c.hash);
+			}
+			return digest.digest(strm.toByteArray());
+		}
+		catch (Exception e) {
+			System.err.println("Something went wrong while hashing a node!");
 			return null;
 		}
 	}
