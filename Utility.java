@@ -38,4 +38,15 @@ public class Utility {
     }
     return chain;
   }
+
+  // chops a list into non-view sublists of length L
+  public static <T> ArrayList<ArrayList<T>> partition(ArrayList<T> l, int k) {
+    ArrayList<ArrayList<T>> parts = new ArrayList<ArrayList<T>>();
+    int N = l.size();
+    for (int i = 0; i < N; i += k) {
+      parts.add(new ArrayList<T>(l.subList(i, Math.min(N, i + k))));
+    }
+    return parts;
+  }
+
 }

@@ -3,15 +3,13 @@
  *  Author:   Matteo Loporchio, 491283
  */
 
-import java.util.ArrayList;
-
-public class Rectangle {
+public class Rectangle implements Comparable<Rectangle> {
 	public final double lx;
 	public final double ly;
 	public final double ux;
 	public final double uy;
 
-	// The default class onstructor.
+	// The default class constructor.
 	public Rectangle(double lx, double ly, double ux, double uy) {
 		this.lx = lx;
 		this.ly = ly;
@@ -19,31 +17,14 @@ public class Rectangle {
 		this.uy = uy;
 	}
 
-	// This constructor builds the MBR from a set of points.
-	public Rectangle(ArrayList<Point> pts) {
-		double lx = Double.POSITIVE_INFINITY,
-		ly = Double.POSITIVE_INFINITY,
-		ux = Double.NEGATIVE_INFINITY,
-		uy = Double.NEGATIVE_INFINITY;
-		for (Point p : pts) {
-			if (p.x <= lx) lx = p.x;
-			if (p.y <= ly) ly = p.y;
-			if (p.x >= ux) ux = p.x;
-			if (p.y >= uy) uy = p.y;
-		}
-		this.lx = lx;
-		this.ly = ly;
-		this.ux = ux;
-		this.uy = uy;
+	// To compare two rectangles, we just compare their lower-left vertices.
+	public int compareTo(Rectangle r) {
+		int s = Double.compare(this.lx, r.lx);
+		return ((s != 0) ? s : Double.compare(this.ly, r.ly));
 	}
 
-	// Computes the union between two rectangles.
-	public Rectangle enlarge(Rectangle r) {
-		return new Rectangle(
-			Math.min(this.lx, r.lx),
-			Math.min(this.ly, r.ly),
-			Math.max(this.ux, r.ux),
-			Math.max(this.uy, r.uy)
-		);
+	// Prints a human-readable string representing the rectangle.
+	public String toString() {
+		return "(" + this.lx + "," + this.ly + "," + this.ux + "," + this.uy + ")";
 	}
 }

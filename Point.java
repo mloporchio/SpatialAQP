@@ -12,13 +12,10 @@ public class Point implements Comparable<Point> {
 		this.x = x;
 		this.y = y;
 	}
-	
+
 	// Method for comparison.
 	public int compareTo(Point p) {
-		if (this.x < p.x) return -1;
-		if (this.y > p.y) return +1;
-		if (this.x < p.x) return -1;
-		if (this.x > p.x) return +1;
-		return 0;
+		int s = Double.compare(this.x, p.x);
+		return ((s != 0) ? s : Double.compare(this.y, p.y));
 	}
 }

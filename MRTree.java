@@ -1,31 +1,50 @@
-/*
-	File:		MRTreeNode.java
-	Author:		Matteo Loporchio
-*/
+/**
+ *  File:     MRTree.java
+ *  Author:   Matteo Loporchio, 491283
+ */
 
-import java.util.ArrayList;
-import java.util.Collections; 
-
-class MRTreeEntry {
-	public Rectangle MBR;
-	public String hash;
-	public MRTree child;
-}
-
-class MRTreeNode {
-	public ArrayList<Point> data;
-	public ArrayList<MRTreeEntry> entries;
-}
+import java.util.*;
 
 public class MRTree {
-	private MRTreeNode root;
-	private ArrayList<MRTreeNode> nodes;
+	public MRTreeNode root;
+	public List<MRTreeNode> nodes;
+
 	// This method constructs the MR-tree with the packed algorithm.
 	public MRTree(ArrayList<Point> pts, int c) {
+		// Create a new set of nodes.
+		this.nodes = new ArrayList<MRTreeNode>();
+		// This is the current working set.
+		ArrayList<MRTreeNode> current = new ArrayList<MRTreeNode>();
 		// Sort the points in ascending order.
-		Collections.sort(pts); 
-		//
-		
-		
+		Collections.sort(pts);
+		// Split the records into chunks of size c.
+		// Then create a leaf node for each chunk.
+		ArrayList<ArrayList<Point>> leafChunks = Utility.partition(pts, c);
+		leafChunks.forEach((ck) -> {
+			MRTreeNode n = new MRTreeNode();
+			n.makeLeaf(ck);
+			this.nodes.add(n);
+		});
+		// Add these new nodes to the current working set and start merging.
+		current.addAll(this.nodes);
+		while (current.size() > 1) {
+			// Divide the list of current nodes into chunks.
+			ArrayList<ArrayList<MRTreeNode>> chunks = Utility.partition(current, c);
+			// For each chunk, merge all its nodes and create a new one.
+			ArrayList<MRTreeNode> merged = new ArrayList<MRTreeNode>();
+			chunks.forEach((ck) -> {
+				MRTreeNode n = new MRTreeNode();
+				n.makeInternal(ck);
+				merged.add(n);
+			});
+			// Add the new nodes to the result.
+			this.nodes.addAll(merged);
+			// These nodes also become the new working set.
+			current = merged;
+			// Sort the current working set and repeat.
+			Collections.sort(current);
+		}
+		// Set the root as the only node left.
+		this.root = current.get(0);
 	}
 }
