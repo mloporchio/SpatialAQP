@@ -13,9 +13,12 @@ public class Main {
 	*/
 	public static void test1() {
 		try {
+			long tstart = System.nanoTime();
 			Blockchain chain = Utility.readFromFile("blockchain.dat");
+			long tend = System.nanoTime();
 			String lastHash = Hash.bytesToHex(chain.getLast());
-			System.out.println(lastHash);
+			System.out.println("Hash of last block = " + lastHash);
+			System.out.println("Duration = " + (tend - tstart)/1000000 + " ms");
 		}
 		catch (Exception e) {
 			System.err.println("Something went wrong!");
@@ -41,7 +44,29 @@ public class Main {
 		System.out.println("rootHash = " + rootHash);
 	}
 
+	/*
+		In this test we measure how much time it takes to load blockchains
+		of variable size (with a fixed number of records per block) without
+		any index construction.
+	*/
+	public static void test3() {
+		try {
+			int[] size = new int[] {100, 200, 500, 1000, 2000, 5000, 10000};
+			for (int i = 0; i < size.length; i++) {
+				String filename = "test/blockchain_" + size[i] + "_1000.dat";
+				long tstart = System.nanoTime();
+				Blockchain chain = Utility.readFromFile(filename);
+				long tend = System.nanoTime();
+				System.out.println("Duration for " + size[i] + " blocks = "
+				+ (tend - tstart)/1000000 + " ms");
+			}
+		}
+		catch (Exception e) {
+			System.err.println("Something went wrong!");
+		}
+	}
+
 	public static void main(String[] args) {
-		test2();
+		test3();
 	}
 }

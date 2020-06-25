@@ -14,7 +14,7 @@ public class Block {
 		this.header = new BlockHeader();
 		this.content = content;
 		// Create the MR-tree index.
-		this.index = new MRTree(content, Global.PAGE_CAPACITY);
-		this.header.indexHash = this.index.root.hash;
+		// this.index = new MRTree(this.content, Global.PAGE_CAPACITY);
+		// this.header.indexHash = this.index.root.hash;
 	}
 }
