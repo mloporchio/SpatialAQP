@@ -24,6 +24,7 @@ CLASSES = \
 	MRTreeNode.java \
 	Point.java \
 	Rectangle.java \
+	TestIndex.java \
 	Utility.java
 
 default: classes

@@ -10,16 +10,16 @@ public class MRTree {
 	public List<MRTreeNode> nodes;
 
 	// This method constructs the MR-tree with the packed algorithm.
-	public MRTree(ArrayList<Point> pts, int c) {
+	public MRTree(List<Point> pts, int c) {
 		// Create a new set of nodes.
 		this.nodes = new ArrayList<MRTreeNode>();
 		// This is the current working set.
-		ArrayList<MRTreeNode> current = new ArrayList<MRTreeNode>();
+		List<MRTreeNode> current = new ArrayList<MRTreeNode>();
 		// Sort the points in ascending order.
 		Collections.sort(pts);
 		// Split the records into chunks of size c.
 		// Then create a leaf node for each chunk.
-		ArrayList<ArrayList<Point>> leafChunks = Utility.partition(pts, c);
+		List<List<Point>> leafChunks = Utility.partition(pts, c);
 		leafChunks.forEach((ck) -> {
 			MRTreeNode n = new MRTreeNode();
 			n.makeLeaf(ck);
@@ -29,9 +29,9 @@ public class MRTree {
 		current.addAll(this.nodes);
 		while (current.size() > 1) {
 			// Divide the list of current nodes into chunks.
-			ArrayList<ArrayList<MRTreeNode>> chunks = Utility.partition(current, c);
+			List<List<MRTreeNode>> chunks = Utility.partition(current, c);
 			// For each chunk, merge all its nodes and create a new one.
-			ArrayList<MRTreeNode> merged = new ArrayList<MRTreeNode>();
+			List<MRTreeNode> merged = new ArrayList<MRTreeNode>();
 			chunks.forEach((ck) -> {
 				MRTreeNode n = new MRTreeNode();
 				n.makeInternal(ck);

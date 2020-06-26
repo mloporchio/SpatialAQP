@@ -1,5 +1,5 @@
 """
-    File:       generator.py
+    File:       generate_chain.py
     Author:     Matteo Loporchio, 491283
 
     This Python script generates a blockchain containing
