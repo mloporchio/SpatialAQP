@@ -3,6 +3,7 @@
  *  Author:   Matteo Loporchio, 491283
  */
 
+import java.util.Map;
 import java.util.HashMap;
 
 public class Blockchain {
@@ -10,7 +11,7 @@ public class Blockchain {
   private byte[] last;
   // We represent the blockchain with a hash map of blocks.
   // Each block is retrieved by means of its hash value.
-  private HashMap<byte[], Block> storage;
+  private Map<byte[], Block> storage;
 
   // This is the default constructor for the class.
 	public Blockchain() {
@@ -23,10 +24,17 @@ public class Blockchain {
     return this.last;
   }
 
+  // Returns the number of blocks that are currently inserted in the chain.
+  public int getSize() {
+    return this.storage.size();
+  }
+
   // This appends a new block to the chain.
   public void append(Block b) throws Exception {
     // Make the new block point to the last one in the chain.
     b.header.prev = this.last;
+    // Update the skip list of the block.
+    // b.updateSkipList(this.last, this.storage);
     // Compute the hash of the new block.
     byte[] h = Hash.hashBlock(b);
     // Update the blockchain.

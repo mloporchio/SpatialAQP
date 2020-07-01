@@ -12,6 +12,15 @@ public class Geometry {
     return (r.lx <= p.x && p.x <= r.ux && r.ly <= p.y && p.y <= r.uy);
   }
 
+  // This function returns true if and only if two rectangles overlap.
+  public static boolean intersect(Rectangle r1, Rectangle r2) {
+    boolean above = (r1.ly >= r2.uy), // r1 is above r2
+    below = (r1.uy <= r2.ly), // r1 is below r2
+    left = (r1.ux <= r2.lx), // r1 is to the left of r2
+    right = (r1.lx >= r2.ux); // r1 is to the right of r2
+    return !(above || below || left || right);
+  }
+
   // This function computes the MBR from a set of points.
   public static Rectangle MBR(List<Point> pts) {
     double lx = Double.POSITIVE_INFINITY, ly = Double.POSITIVE_INFINITY,

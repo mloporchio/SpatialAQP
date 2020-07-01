@@ -18,12 +18,12 @@ public class TestIndex {
       List<Point> pts = Utility.readPointsB("test/records.bin");
       // Read the number of records.
       int nrec = pts.size();
-      System.out.println("Testing construction for n=" + nrec +
-      " and c=" + c + "...");
       // Time the execution of the construction algorithm.
       long tStart = System.nanoTime();
       MRTree T = new MRTree(pts, c);
       long tEnd = System.nanoTime();
+      System.out.println("Number of records: " + nrec);
+      System.out.println("Index capacity: " + c);
       System.out.println("Elapsed time: " + (tEnd-tStart)/1000000 + " ms");
     }
     catch (Exception e) {

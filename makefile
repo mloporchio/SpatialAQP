@@ -24,6 +24,9 @@ CLASSES = \
 	MRTreeNode.java \
 	Point.java \
 	Rectangle.java \
+	SkipList.java \
+	SkipListEntry.java \
+	TestChain.java \
 	TestIndex.java \
 	Utility.java
 
