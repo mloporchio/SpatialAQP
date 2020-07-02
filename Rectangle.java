@@ -17,6 +17,14 @@ public class Rectangle implements Comparable<Rectangle> {
 		this.uy = uy;
 	}
 
+	// Builds an empty rectangle.
+	public Rectangle() {
+		this.lx = Double.POSITIVE_INFINITY;
+		this.ly = Double.POSITIVE_INFINITY;
+		this.ux = Double.NEGATIVE_INFINITY;
+		this.uy = Double.NEGATIVE_INFINITY;
+	}
+
 	// To compare two rectangles, we just compare their lower-left vertices.
 	public int compareTo(Rectangle r) {
 		int s = Double.compare(this.lx, r.lx);

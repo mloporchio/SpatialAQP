@@ -25,9 +25,14 @@ public class TestChain {
       System.out.println("Blocks read: " + chain.getSize());
       System.out.println("Index capacity: " + c);
       System.out.println("Elapsed time: " + (tEnd - tStart)/1000000 + " ms");
+      // Get the last block of the chain.
+      Block last = chain.getLastBlock();
+      // Print its skip list.
+      System.out.println(last.skip.toString());
     }
     catch (Exception e) {
       System.err.println("Something went wrong!");
+      e.printStackTrace();
     }
   }
 }

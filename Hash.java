@@ -85,15 +85,39 @@ class Hash {
 	}
 
 	/**
+	 *	This function computes the hash value of a skip list.
+	 */
+	public static byte[] hashSkip(SkipList skip) {
+		try {
+			MessageDigest digest = MessageDigest.getInstance("SHA-256");
+			ByteArrayOutputStream strm = new ByteArrayOutputStream();
+			for (int i = 0; i < skip.entries.length; i++) {
+				Rectangle r = skip.entries[i].MBR;
+				byte[] rbuf = ByteBuffer.allocate(64).putDouble(r.lx).
+				putDouble(r.ly).putDouble(r.ux).putDouble(r.uy).array();
+				strm.write(skip.entries[i].ref);
+				strm.write(rbuf);
+				strm.write(skip.entries[i].rectHash);
+			}
+			return digest.digest(strm.toByteArray());
+		}
+		catch (Exception e) {
+			System.err.println("Something went wrong while hashing a skip list!");
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
 	 *	This function computes the hash value of a block.
 	 */
 	public static byte[] hashBlock(Block b) {
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
 			ByteArrayOutputStream strm = new ByteArrayOutputStream();
-			strm.write(b.header.prev);
-			strm.write(b.header.indexHash);
-			strm.write(b.header.skipHash);
+			strm.write((b.prev != null) ? b.prev : Global.ZERO_BYTES);
+			strm.write((b.indexHash != null) ? b.indexHash : Global.ZERO_BYTES);
+			strm.write((b.skipHash != null) ? b.skipHash : Global.ZERO_BYTES);
 			strm.write(hashPoints(b.content));
 			return digest.digest(strm.toByteArray());
 		}

@@ -12,9 +12,9 @@ public class SkipListEntry {
   public byte[] rectHash;
 
   // Default constructor.
-  public SkipListEntry(byte[] ref) {
-    this.ref = ref;
-    this.MBR = new Rectangle(0,0,0,0);
-    this.rectHash = Hash.hashRectangle(this.MBR);
+  public SkipListEntry() {
+    this.ref = null;
+    this.MBR = null;
+    this.rectHash = null;
   }
 }

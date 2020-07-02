@@ -16,7 +16,6 @@ JC = javac
 CLASSES = \
 	Block.java \
 	Blockchain.java \
-	BlockHeader.java \
 	Geometry.java \
 	Hash.java \
 	Main.java \
