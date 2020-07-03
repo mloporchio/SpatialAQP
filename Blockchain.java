@@ -15,35 +15,35 @@ public class Blockchain {
 
   // This is the default constructor for the class.
 	public Blockchain() {
-    this.last = null;
-    this.storage = new HashMap<byte[], Block>();
+    last = null;
+    storage = new HashMap<byte[], Block>();
 	}
 
   // Returns a reference to the last block in the chain.
   public Block getLastBlock() {
-    return this.storage.get(this.last);
+    return storage.get(last);
   }
 
   // Returns a reference to the block with the given address.
   public Block getBlock(byte[] ref) {
-    return this.storage.get(ref);
+    return storage.get(ref);
   }
 
   // Returns the number of blocks that are currently inserted in the chain.
   public int getSize() {
-    return this.storage.size();
+    return storage.size();
   }
 
   // This appends a new block to the chain.
   public void append(Block b) throws Exception {
     // Make the new block point to the last one in the chain.
-    b.prev = this.last;
+    b.prev = last;
     // Initialize the skip list for the new block.
-    b.initSkipList(this.storage);
+    b.buildSkipList(storage);
     // Compute the hash of the new block.
     byte[] h = Hash.hashBlock(b);
     // Update the blockchain.
-		this.last = h;
-		this.storage.put(h, b);
+		last = h;
+		storage.put(h, b);
   }
 }

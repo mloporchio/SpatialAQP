@@ -1,5 +1,5 @@
 /**
- *  File:     SkipList.java
+ *  File:     SkipListEntry.java
  *  Author:   Matteo Loporchio, 491283
  */
 
