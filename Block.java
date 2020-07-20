@@ -23,8 +23,8 @@ public class Block {
 	public Block(List<Point> pts, int c) {
 		prev = null;
 		// Construct the MR-tree index.
-		index = new MRTree(pts, c);
-		indexHash = index.root.hash;
+		index = MRTree.buildPacked(pts, c);
+		indexHash = index.getRoot().getHash();
 		// Copy a reference to the content.
 		content = pts;
 		// Assign a unique ID to each block.

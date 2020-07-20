@@ -10,7 +10,7 @@ import random
 import struct
 import sys
 
-def generate_chain(filename, nblocks, minrec, maxrec):
+def generate_chain(filename, nblocks, minrec, maxrec, minval, maxval):
 	# Create a new file with the given name.
     f = open(filename, 'wb')
     # The first we write is the total number of blocks.
@@ -23,21 +23,23 @@ def generate_chain(filename, nblocks, minrec, maxrec):
         f.write(struct.pack('>i', nrec))
         # Generate the random records and write them.
         for j in range(0, nrec):
-            x = random.random()
-            y = random.random()
+            x = random.uniform(minval, maxval)#random.random()
+            y = random.uniform(minval, maxval)#random.random()
             f.write(struct.pack('>dd', x, y))
     # Close the file.
     f.close()
 
 def main(argv):
-    if len(argv) < 5:
+    if len(argv) < 7:
         print("Error: too few arguments!")
         return
     filename = argv[1]
     nblocks = int(argv[2])
     minrec = int(argv[3])
     maxrec = int(argv[4])
-    generate_chain(filename, nblocks, minrec, maxrec)
+    minval = float(argv[5])
+    maxval = float(argv[6])
+    generate_chain(filename, nblocks, minrec, maxrec, minval, maxval)
 
 if __name__ == '__main__':
     main(sys.argv)

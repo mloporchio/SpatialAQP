@@ -3,7 +3,8 @@
 #		Author:		Matteo Loporchio, 491283
 #
 #		This is a standard makefile to compile the entire SpatialAQP project.
-#		Many thanks to https://www.cs.swarthmore.edu/~newhall/unixhelp/javamakefiles.html
+#		Many thanks to
+#		https://www.cs.swarthmore.edu/~newhall/unixhelp/javamakefiles.html
 #		for sharing their code.
 #
 
@@ -22,10 +23,12 @@ CLASSES = \
 	MRTree.java \
 	MRTreeNode.java \
 	Point.java \
+	Query.java \
 	Rectangle.java \
 	SkipListEntry.java \
 	TestChain.java \
 	TestIndex.java \
+	TestQuery.java \
 	Utility.java
 
 default: classes

@@ -66,7 +66,7 @@ class Hash {
 	}
 
 	/**
-	 *	This function computes the hash value of a rectangle.
+	 *	This function computes the hash value of a list of nodes.
 	 */
 	public static byte[] hashNode(List<MRTreeNode> children) {
 		try {
@@ -74,10 +74,11 @@ class Hash {
 			ByteArrayOutputStream strm = new ByteArrayOutputStream();
 			// Read the content of all children.
 			for (MRTreeNode c : children) {
-				byte[] rbuf = ByteBuffer.allocate(64).putDouble(c.MBR.lx).
-				putDouble(c.MBR.ly).putDouble(c.MBR.ux).putDouble(c.MBR.uy).array();
+				Rectangle MBR = c.getMBR();
+				byte[] rbuf = ByteBuffer.allocate(64).putDouble(MBR.lx).
+				putDouble(MBR.ly).putDouble(MBR.ux).putDouble(MBR.uy).array();
 				strm.write(rbuf);
-				strm.write(c.hash);
+				strm.write(c.getHash());
 			}
 			return digest.digest(strm.toByteArray());
 		}
