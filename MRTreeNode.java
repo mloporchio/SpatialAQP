@@ -1,7 +1,7 @@
 /**
- *  File:     MRTreeNode.java
- *  Author:   Matteo Loporchio, 491283
- */
+*  File:     MRTreeNode.java
+*  Author:   Matteo Loporchio, 491283
+*/
 
 import java.util.*;
 
@@ -12,8 +12,8 @@ public class MRTreeNode implements Comparable<MRTreeNode> {
 	private List<MRTreeNode> children;
 
 	/**
-	 *	This is the default constructor for the MR-tree node.
-	 */
+	*	This is the default constructor for the MR-tree node.
+	*/
 	public MRTreeNode(Rectangle MBR, byte[] hash, List<Point> data,
 	List<MRTreeNode> children) {
 		this.MBR = MBR;
@@ -23,48 +23,50 @@ public class MRTreeNode implements Comparable<MRTreeNode> {
 	}
 
 	/**
-	 *	Returns the MBR of the node.
-	 */
+	*	Returns the MBR of the node.
+	*/
 	public Rectangle getMBR() {
 		return MBR;
 	}
 
 	/**
-	 *	Returns the hash of the MBR of the node.
-	 */
+	*	Returns the hash of the MBR of the node.
+	*/
 	public byte[] getHash() {
 		return hash;
 	}
 
 	/**
-	 *
-	 */
+	*
+	*/
 	public List<Point> getData() {
 		return data;
 	}
 
 	/**
-	 *
-	 */
+	*
+	*/
 	public List<MRTreeNode> getChildren() {
 		return children;
 	}
 
 	/**
-	 *	Returns true if and only if the current node is a leaf.
-	 */
+	*	Returns true if and only if the current node is a leaf.
+	*/
 	public boolean isLeaf() {
 		return (data != null && children == null);
 	}
 
 	/**
-	 *	Comparison function.
-	 */
+	*	Comparison function.
+	*/
 	public int compareTo(MRTreeNode n) {
 		return MBR.compareTo(n.MBR);
 	}
 
-	// Creates a new leaf node.
+	/**
+	*	Static factory method for 
+	*/
 	public static MRTreeNode fromPoints(List<Point> data) {
 		return new MRTreeNode(Geometry.MBR(data), Hash.hashPoints(data),
 		data, null);

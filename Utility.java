@@ -1,7 +1,7 @@
 /**
- *  File:     Utility.java
- *  Author:   Matteo Loporchio, 491283
- */
+*  File:     Utility.java
+*  Author:   Matteo Loporchio, 491283
+*/
 
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
@@ -13,9 +13,9 @@ import java.util.*;
 public class Utility {
 
   /**
-   *  This function reads a binary file containing 2D points and returns
-   *  a list that contains them.
-   */
+  *  This function reads a binary file containing 2D points and returns
+  *  a list that contains them.
+  */
   public static List<Point> readPointsB(String filename) throws Exception {
     Path path = Paths.get(filename);
     byte[] content = Files.readAllBytes(path);
@@ -29,17 +29,17 @@ public class Utility {
   }
 
   /**
-   *  This function creates a new blockchain by reading its content
-   *  from a given binary file. The index inside each block is built
-   *  with a page capacity equal to c.
-   */
+  *  This function creates a new blockchain by reading its content
+  *  from a given binary file. The index inside each block is built
+  *  with a page capacity equal to c.
+  */
   public static Blockchain readChainB(String filename, int c) throws Exception
   {
     Path path = Paths.get(filename);
     byte[] content = Files.readAllBytes(path);
     ByteBuffer buf = ByteBuffer.wrap(content);
     // Create a new blockchain object.
-    Blockchain chain = new Blockchain();
+    Blockchain chain = new Blockchain(c, Global.SKIP_LIST_SIZE);
     // Read the number of blocks.
     int nblocks = buf.getInt();
     // Now, for each block...
@@ -52,15 +52,15 @@ public class Utility {
         double x = buf.getDouble(), y = buf.getDouble();
         records.add(new Point(x, y));
       }
-      // Append the new block to the chain.
-      chain.append(new Block(records, c));
+      // Create a new block and append it to the chain.
+      chain.append(records);
     }
     return chain;
   }
 
   /**
-   *  This function chops a list into sublists of length k.
-   */
+  *  This function chops a list into sublists of length k.
+  */
   public static <T> List<List<T>> partition(List<T> l, int k) {
     List<List<T>> parts = new ArrayList<List<T>>();
     int N = l.size();

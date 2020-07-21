@@ -1,11 +1,11 @@
 /**
- *  File:     TestIndex.java
- *  Author:   Matteo Loporchio, 491283
- *
- *  In this file we test the construction of a MR-tree index for
- *  a certain set of 2D records. We measure the construction time
- *  in milliseconds.
- */
+*  File:     TestIndex.java
+*  Author:   Matteo Loporchio, 491283
+*
+*  In this file we test the construction of a MR-tree index for
+*  a certain set of 2D records. We measure the construction time
+*  in milliseconds.
+*/
 
 import java.util.*;
 

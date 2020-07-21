@@ -1,8 +1,8 @@
 /**
- *  File:     TestQuery.java
- *  Author:   Matteo Loporchio, 491283
- *
- */
+*  File:     TestQuery.java
+*  Author:   Matteo Loporchio, 491283
+*
+*/
 
 import java.util.*;
 
@@ -14,7 +14,7 @@ public class TestQuery {
       // Read the page capacity from input.
       int c = Integer.parseInt(args[1]);
       // Build the blockchain.
-			Blockchain chain = Utility.readChainB(filename, c);
+      Blockchain chain = Utility.readChainB(filename, c);
       // Build the query rectangle.
       Rectangle q = new Rectangle(0.5, 0.5, 1.0, 1.0);
       // Traverse the chain and scan each block.

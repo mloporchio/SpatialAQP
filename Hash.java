@@ -97,12 +97,12 @@ class Hash {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
 			ByteArrayOutputStream strm = new ByteArrayOutputStream();
 			for (int i = 0; i < skip.length; i++) {
-				Rectangle r = skip[i].MBR;
+				Rectangle r = skip[i].getMBR();
 				byte[] rbuf = ByteBuffer.allocate(64).putDouble(r.lx).
 				putDouble(r.ly).putDouble(r.ux).putDouble(r.uy).array();
-				strm.write(skip[i].ref);
+				strm.write(skip[i].getRef());
 				strm.write(rbuf);
-				strm.write(skip[i].rectHash);
+				strm.write(skip[i].getRectHash());
 			}
 			return digest.digest(strm.toByteArray());
 		}

@@ -25,6 +25,7 @@ CLASSES = \
 	Point.java \
 	Query.java \
 	Rectangle.java \
+	SkipList.java \
 	SkipListEntry.java \
 	TestChain.java \
 	TestIndex.java \

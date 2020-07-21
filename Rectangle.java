@@ -1,7 +1,7 @@
 /**
- *  File:     Rectangle.java
- *  Author:   Matteo Loporchio, 491283
- */
+*	File:     Rectangle.java
+*	Author:   Matteo Loporchio, 491283
+*/
 
 public class Rectangle implements Comparable<Rectangle> {
 	public final double lx;
@@ -9,7 +9,9 @@ public class Rectangle implements Comparable<Rectangle> {
 	public final double ux;
 	public final double uy;
 
-	// The default class constructor.
+	/**
+	*	The default class constructor.
+	*/
 	public Rectangle(double lx, double ly, double ux, double uy) {
 		this.lx = lx;
 		this.ly = ly;
