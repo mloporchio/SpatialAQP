@@ -10,7 +10,7 @@ public class Block {
 	public final byte[] prev;
 	public final byte[] indexHash;
 	public final byte[] skipHash;
-	public final MRTree index;
+	public final MRTreeNode indexRoot;
 	public final SkipListEntry[] skip;
 	public final List<Point> content;
 	public final int id;
@@ -19,11 +19,11 @@ public class Block {
 	*	This is the default constructor for the block.
 	*/
 	public Block(byte[] prev, byte[] indexHash, byte[] skipHash,
-	MRTree index, SkipListEntry[] skip, List<Point> content, int id) {
+	MRTreeNode indexRoot, SkipListEntry[] skip, List<Point> content, int id) {
 		this.prev = prev;
 		this.indexHash = indexHash;
 		this.skipHash = skipHash;
-		this.index = index;
+		this.indexRoot = indexRoot;
 		this.skip = skip;
 		this.content = content;
 		this.id = id;

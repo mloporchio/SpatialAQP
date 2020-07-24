@@ -20,7 +20,7 @@ public class TestIndex {
       int nrec = pts.size();
       // Time the execution of the construction algorithm.
       long tStart = System.nanoTime();
-      MRTree T = MRTree.buildPacked(pts, c);
+      MRTreeNode T = MRTree.buildPacked(pts, c);
       long tEnd = System.nanoTime();
       System.out.println("Number of records: " + nrec);
       System.out.println("Index capacity: " + c);

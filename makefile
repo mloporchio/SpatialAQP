@@ -19,7 +19,6 @@ CLASSES = \
 	Blockchain.java \
 	Geometry.java \
 	Hash.java \
-	Main.java \
 	MRTree.java \
 	MRTreeNode.java \
 	Point.java \

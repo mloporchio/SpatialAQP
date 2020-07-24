@@ -65,19 +65,23 @@ public class MRTreeNode implements Comparable<MRTreeNode> {
 	}
 
 	/**
-	*	Static factory method that creates a new leaf node.
+	*	Static factory method that creates a new leaf node
+	*	from a list of points.
+	*	@param pts the list of points
+	*	@return a leaf node
 	*/
-	public static MRTreeNode fromPoints(List<Point> data) {
-		return new MRTreeNode(Geometry.MBR(data), Hash.hashPoints(data),
-		data, null);
+	public static MRTreeNode nodeFromPoints(List<Point> pts) {
+		return new MRTreeNode(Geometry.MBR(pts), Hash.hashPoints(pts),
+		pts, null);
 	}
 
 	// Creates a new internal node.
-	public static MRTreeNode fromChildren(List<MRTreeNode> children) {
+	public static MRTreeNode nodeFromChildren(List<MRTreeNode> children) {
 		// Take all the bounding rectangles of the children.
 		List<Rectangle> rects = new ArrayList<Rectangle>();
 		children.forEach((c) -> rects.add(c.getMBR()));
 		return new MRTreeNode(Geometry.enlarge(rects), Hash.hashNode(children),
 		null, children);
 	}
+
 }

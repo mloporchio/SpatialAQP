@@ -17,13 +17,12 @@ public class TestQuery {
 
       // Build an index for these records.
       long cstart = System.nanoTime();
-      MRTree T = MRTree.buildPacked(records, c);
+      MRTreeNode T = MRTree.buildPacked(records, c);
       long cend = System.nanoTime();
 
       // Query the index.
       long qstart = System.nanoTime();
-      VObject vo = Query.treeSearchRec(
-      T.getRoot(), new Rectangle(0.5, 0.5, 1.0, 1.0));
+      VObject vo = Query.treeSearchRec(T, new Rectangle(0.5, 0.5, 1.0, 1.0));
       long qend = System.nanoTime();
 
       // Verify the results.
@@ -32,7 +31,7 @@ public class TestQuery {
       long vend = System.nanoTime();
 
       System.out.println("Root hash =\t\t" +
-      Hash.bytesToHex(T.getRoot().getHash()));
+      Hash.bytesToHex(T.getHash()));
       System.out.println("Reconstructed hash =\t" +
       Hash.bytesToHex(vr.getHash()));
       System.out.println("Index construction time: "

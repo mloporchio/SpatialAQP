@@ -64,12 +64,10 @@ public class Utility {
   * @param k the number of elements in each sublist
   * @return a list containing all the sublists
   */
-  public static <T> List<List<T>> partition(List<T> l, int k) {
+  public static <T> List<List<T>> split(List<T> l, int k) {
     List<List<T>> parts = new ArrayList<List<T>>();
-    int N = l.size();
-    for (int i = 0; i < N; i += k) {
-      parts.add(new ArrayList<T>(l.subList(i, Math.min(N, i + k))));
-    }
+    for (int i = 0; i < l.size(); i += k)
+      parts.add(new ArrayList<T>(l.subList(i, Math.min(l.size(), i + k))));
     return parts;
   }
 }

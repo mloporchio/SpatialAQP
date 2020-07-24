@@ -55,14 +55,15 @@ public class Blockchain {
   */
   public byte[] append(List<Point> content) throws Exception {
     // Build the MR-tree index.
-    MRTree index = MRTree.buildPacked(content, capacity);
-		byte[] indexHash = index.getRoot().getHash();
+    MRTreeNode indexRoot = MRTree.buildPacked(content, capacity);
+		byte[] indexHash = indexRoot.getHash();
     // Build the skip list index.
     SkipListEntry[] skip = SkipList.buildSkip(storage, last, skipsize);
     byte[] skipHash = null;
     // Create the new block and compute its hash.
     int id = getSize()+1;
-    Block b = new Block(last, indexHash, skipHash, index, skip, content, id);
+    Block b = new Block(last, indexHash, skipHash, indexRoot, skip,
+    content, id);
     byte[] h = Hash.hashBlock(b);
     // Update the blockchain.
 		last = h;
