@@ -8,7 +8,7 @@ import java.util.Map;
 public final class SkipList {
 
   /**
-  *
+  * 
   */
   public static SkipListEntry[] buildSkip(Map<byte[], Block> storage,
   byte[] last, int m) {

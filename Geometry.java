@@ -1,7 +1,7 @@
 /**
- *  File:     Geometry.java
- *  Author:   Matteo Loporchio, 491283
- */
+* File:		Geometry.java
+* Author:	Matteo Loporchio, 491283
+*/
 
 import java.util.List;
 

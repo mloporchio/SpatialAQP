@@ -1,6 +1,6 @@
 /**
-*  File:     Block.java
-*  Author:   Matteo Loporchio, 491283
+* File:		Block.java
+* Author:	Matteo Loporchio, 491283
 */
 
 import java.util.Map;

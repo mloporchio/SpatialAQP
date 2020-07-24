@@ -1,6 +1,6 @@
 /**
-*  File:     MRTreeNode.java
-*  Author:   Matteo Loporchio, 491283
+* File:		MRTreeNode.java
+* Author:	Matteo Loporchio, 491283
 */
 
 import java.util.*;
@@ -65,7 +65,7 @@ public class MRTreeNode implements Comparable<MRTreeNode> {
 	}
 
 	/**
-	*	Static factory method for 
+	*	Static factory method that creates a new leaf node.
 	*/
 	public static MRTreeNode fromPoints(List<Point> data) {
 		return new MRTreeNode(Geometry.MBR(data), Hash.hashPoints(data),

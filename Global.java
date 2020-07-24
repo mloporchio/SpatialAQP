@@ -1,10 +1,10 @@
 /**
- *  File:     Global.java
- *  Author:   Matteo Loporchio, 491283
- */
+* File:		Global.java
+* Author:	Matteo Loporchio, 491283
+*/
 
-public class Global {
-  // This is an 
+public final class Global {
+  // This is an
   public static final byte[] ZERO_BYTES = new byte[32];
   // This represents the default page capacity for the MR-tree.
   public static final int PAGE_CAPACITY = 20;

@@ -1,7 +1,7 @@
 /**
- *  File:     Blockchain.java
- *  Author:   Matteo Loporchio, 491283
- */
+* File:		Blockchain.java
+* Author:	Matteo Loporchio, 491283
+*/
 
 import java.util.List;
 import java.util.Map;

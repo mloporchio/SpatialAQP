@@ -1,7 +1,6 @@
 /**
-*  File:     TestQuery.java
-*  Author:   Matteo Loporchio, 491283
-*
+* File:   TestQuery.java
+* Author: Matteo Loporchio, 491283
 */
 
 import java.util.*;
@@ -13,23 +12,34 @@ public class TestQuery {
       String filename = args[0];
       // Read the page capacity from input.
       int c = Integer.parseInt(args[1]);
-      // Build the blockchain.
-      Blockchain chain = Utility.readChainB(filename, c);
-      // Build the query rectangle.
-      Rectangle q = new Rectangle(0.5, 0.5, 1.0, 1.0);
-      // Traverse the chain and scan each block.
-      long tStart = System.nanoTime();
-      Block curr = chain.getLastBlock();
-      List<Point> result = new ArrayList<Point>();
-      while (curr != null) {
-        Query.treeSearchExt(curr.index.getRoot(), q, result);
-        //Query.filterExt(curr.content, q, result);
-        curr = chain.getBlock(curr.prev);
-      }
-      long tEnd = System.nanoTime();
-      // Print the number of records found.
-      System.out.println("Records found: " + result.size());
-      System.out.println("Elapsed time: " + (tEnd - tStart)/1000000 + " ms");
+      // Read the records from a file.
+      List<Point> records = Utility.readPointsB(filename);
+
+      // Build an index for these records.
+      long cstart = System.nanoTime();
+      MRTree T = MRTree.buildPacked(records, c);
+      long cend = System.nanoTime();
+
+      // Query the index.
+      long qstart = System.nanoTime();
+      VObject vo = Query.treeSearchRec(
+      T.getRoot(), new Rectangle(0.5, 0.5, 1.0, 1.0));
+      long qend = System.nanoTime();
+
+      // Verify the results.
+      long vstart = System.nanoTime();
+      VResult vr = Query.verify(vo);
+      long vend = System.nanoTime();
+
+      System.out.println("Root hash =\t\t" +
+      Hash.bytesToHex(T.getRoot().getHash()));
+      System.out.println("Reconstructed hash =\t" +
+      Hash.bytesToHex(vr.getHash()));
+      System.out.println("Index construction time: "
+      + (cend - cstart)/1000000 + " ms");
+      System.out.println("Query time: " + (qend - qstart)/1000000 + " ms");
+      System.out.println("Verification time: "
+      + (vend - vstart)/1000000 + " ms");
     }
     catch (Exception e) {
       System.err.println("Something went wrong!");

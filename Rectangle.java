@@ -1,6 +1,6 @@
 /**
-*	File:     Rectangle.java
-*	Author:   Matteo Loporchio, 491283
+* File:		Rectangle.java
+* Author:	Matteo Loporchio, 491283
 */
 
 public class Rectangle implements Comparable<Rectangle> {
@@ -10,21 +10,14 @@ public class Rectangle implements Comparable<Rectangle> {
 	public final double uy;
 
 	/**
-	*	The default class constructor.
+	*	The default rectangle constructor.
+	*
 	*/
 	public Rectangle(double lx, double ly, double ux, double uy) {
 		this.lx = lx;
 		this.ly = ly;
 		this.ux = ux;
 		this.uy = uy;
-	}
-
-	// Builds an empty rectangle.
-	public Rectangle() {
-		this.lx = Double.POSITIVE_INFINITY;
-		this.ly = Double.POSITIVE_INFINITY;
-		this.ux = Double.NEGATIVE_INFINITY;
-		this.uy = Double.NEGATIVE_INFINITY;
 	}
 
 	// To compare two rectangles, we just compare their lower-left vertices.

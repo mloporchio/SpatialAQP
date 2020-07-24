@@ -1,6 +1,6 @@
 /**
-*  File:     Utility.java
-*  Author:   Matteo Loporchio, 491283
+* File:		Utility.java
+* Author:	Matteo Loporchio, 491283
 */
 
 import java.nio.ByteBuffer;
@@ -13,8 +13,8 @@ import java.util.*;
 public class Utility {
 
   /**
-  *  This function reads a binary file containing 2D points and returns
-  *  a list that contains them.
+  * This function reads a binary file containing 2D points and returns
+  * a list that contains them.
   */
   public static List<Point> readPointsB(String filename) throws Exception {
     Path path = Paths.get(filename);
@@ -29,9 +29,9 @@ public class Utility {
   }
 
   /**
-  *  This function creates a new blockchain by reading its content
-  *  from a given binary file. The index inside each block is built
-  *  with a page capacity equal to c.
+  * This function creates a new blockchain by reading its content
+  * from a given binary file. The index inside each block is built
+  * with a page capacity equal to c.
   */
   public static Blockchain readChainB(String filename, int c) throws Exception
   {
@@ -59,7 +59,10 @@ public class Utility {
   }
 
   /**
-  *  This function chops a list into sublists of length k.
+  * This function chops a list into sublists of a given length.
+  * @param l the list to be divided
+  * @param k the number of elements in each sublist
+  * @return a list containing all the sublists
   */
   public static <T> List<List<T>> partition(List<T> l, int k) {
     List<List<T>> parts = new ArrayList<List<T>>();

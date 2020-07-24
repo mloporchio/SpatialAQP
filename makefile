@@ -30,7 +30,11 @@ CLASSES = \
 	TestChain.java \
 	TestIndex.java \
 	TestQuery.java \
-	Utility.java
+	Utility.java \
+	VContainer.java \
+	VLeaf.java \
+	VObject.java \
+	VPruned.java
 
 default: classes
 

@@ -1,7 +1,7 @@
 /**
- *  File:     Hash.java
- *  Author:   Matteo Loporchio, 491283
- */
+*  File:     Hash.java
+*  Author:   Matteo Loporchio, 491283
+*/
 
 import java.io.*;
 import java.nio.*;
@@ -9,14 +9,14 @@ import java.security.*;
 import java.util.*;
 
 /**
- *	This class contains several methods to compute the hash values
- *	of geometric elements (e.g. points and rectangles)
- */
+*	This class contains several methods to compute the hash values
+*	of geometric elements (e.g. points and rectangles)
+*/
 class Hash {
 
 	/**
-	 *	This function computes the hash value of a 2D point.
-	 */
+	*	This function computes the hash value of a 2D point.
+	*/
 	public static byte[] hashPoint(Point p) {
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -32,8 +32,8 @@ class Hash {
 	}
 
 	/**
-	 *	This function computes the hash value of a list of 2D points.
-	 */
+	*	This function computes the hash value of a list of 2D points.
+	*/
 	public static byte[] hashPoints(List<Point> pts) {
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -49,8 +49,8 @@ class Hash {
 	}
 
 	/**
-	 *	This function computes the hash value of a rectangle.
-	 */
+	*	This function computes the hash value of a rectangle.
+	*/
 	public static byte[] hashRectangle(Rectangle r) {
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -66,8 +66,8 @@ class Hash {
 	}
 
 	/**
-	 *	This function computes the hash value of a list of nodes.
-	 */
+	*	This function computes the hash value of a list of nodes.
+	*/
 	public static byte[] hashNode(List<MRTreeNode> children) {
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -90,8 +90,8 @@ class Hash {
 	}
 
 	/**
-	 *	This function computes the hash value of a skip list.
-	 */
+	*	This function computes the hash value of a skip list.
+	*/
 	public static byte[] hashSkip(SkipListEntry[] skip) {
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -114,8 +114,8 @@ class Hash {
 	}
 
 	/**
-	 *	This function computes the hash value of a block.
-	 */
+	*	This function computes the hash value of a block.
+	*/
 	public static byte[] hashBlock(Block b) {
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -133,16 +133,43 @@ class Hash {
 		}
 	}
 
+
+	/**
+	*
+	*/
+	public static byte[] reconstruct(List<Rectangle> rects, List<byte[]> hashes)
+	{
+		//
+		if (rects.size() != hashes.size()) return null;
+		try {
+			MessageDigest digest = MessageDigest.getInstance("SHA-256");
+			ByteArrayOutputStream strm = new ByteArrayOutputStream();
+			for (int i = 0; i < rects.size(); i++) {
+				Rectangle r = rects.get(i);
+				byte[] rbuf = ByteBuffer.allocate(64).putDouble(r.lx).
+				putDouble(r.ly).putDouble(r.ux).putDouble(r.uy).array();
+				strm.write(rbuf);
+				strm.write(hashes.get(i));
+			}
+			return digest.digest(strm.toByteArray());
+		}
+		catch (Exception e) {
+			System.err.println("Something went wrong while hashing a node!");
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	/**
 	* Converts an array of bytes to a human-readable hexadecimal string.
 	*/
 	public static String bytesToHex(byte[] hash) {
-    StringBuffer hexString = new StringBuffer();
-    for (int i = 0; i < hash.length; i++) {
-    String hex = Integer.toHexString(0xff & hash[i]);
-    if (hex.length() == 1) hexString.append('0');
+		StringBuffer hexString = new StringBuffer();
+		for (int i = 0; i < hash.length; i++) {
+			String hex = Integer.toHexString(0xff & hash[i]);
+			if (hex.length() == 1) hexString.append('0');
 			hexString.append(hex);
-  	}
+		}
 		return hexString.toString();
 	}
 }

@@ -1,7 +1,7 @@
 /**
- *  File:     MRTree.java
- *  Author:   Matteo Loporchio, 491283
- */
+* File:		MRTree.java
+* Author:	Matteo Loporchio, 491283
+*/
 
 import java.util.*;
 

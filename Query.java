@@ -1,16 +1,109 @@
 /**
- *  File:     Query.java
- *  Author:   Matteo Loporchio, 491283
- */
+* File:   Query.java
+* Author: Matteo Loporchio, 491283
+*/
 
- import java.util.*;
+import java.util.*;
 
- public class Query {
+public final class Query {
 
-   /**
-    *   This function
-    *
-    */
+  /**
+  *
+  */
+  public static List<Point> filter(List<Point> pts, Rectangle query) {
+    List<Point> result = new ArrayList<Point>();
+    pts.forEach((p) -> {
+      if (Geometry.contains(query, p)) result.add(p);
+    });
+    return result;
+  }
+
+  /**
+  * This method
+  */
+  public static VObject treeSearchRec(MRTreeNode T, Rectangle query) {
+    // If the node is a leaf, we construct a VO with all its points.
+    if (T.isLeaf()) return new VLeaf(T.getData());
+    // Otherwise, we need to check if the MBR of the node intersects
+    // the query rectangle.
+    // If this is not the case, then the subtree will not contain any
+    // interesting record.
+    if (!Geometry.intersect(T.getMBR(), query))
+      return new VPruned(T.getMBR(), T.getHash());
+    // Otherwise, we need to explore recursively all subtrees rooted in
+    // the current node.
+    VContainer cont = new VContainer();
+    List<Point> result = new ArrayList<Point>();
+    T.getChildren().forEach((n) -> {
+      VObject partial = treeSearchRec(n, query);
+      cont.append(partial);
+    });
+    return cont;
+  }
+
+  /**
+  *
+  */
+  public static VResult verify(VObject vo) {
+    // Reconstruct a leaf node.
+    if (vo.getType() == VObject.VObjectType.LEAF) {
+      List<Point> records = ((VLeaf) vo).getRecords();
+      Rectangle MBR = Geometry.MBR(records);
+      byte[] h = Hash.hashPoints(records);
+      return new VResult(records, MBR, h);
+    }
+    // Reconstruct a pruned internal node.
+    if (vo.getType() == VObject.VObjectType.PRUNED) {
+      VPruned pr = ((VPruned) vo);
+      return new VResult(new ArrayList<Point>(), pr.getMBR(), pr.getHash());
+    }
+    // Otherwise we must reconstruct a non-pruned internal node.
+    // This node is represented by means of a VO container.
+    List<Point> records = new ArrayList<Point>();
+    List<Rectangle> rects = new ArrayList<Rectangle>();
+    List<byte[]> hashes = new ArrayList<byte[]>();
+    // Obtain the VO container.
+    VContainer cont = (VContainer) vo;
+    // Recursively examine each VO in the container.
+    for (int i = 0; i < cont.size(); i++) {
+      VResult partial = verify(cont.get(i));
+      // Take all the matching records and add them to the result set.
+      records.addAll(partial.getContent());
+      // Collect all rectangles and hashes.
+      rects.add(partial.getMBR());
+      hashes.add(partial.getHash());
+    }
+    // Compute the union of all the MBRs of
+    Rectangle u = Geometry.enlarge(rects);
+    byte[] hash = Hash.reconstruct(rects, hashes);
+    return new VResult(records, u, hash);
+  }
+
+  /**
+  *
+  *
+  public static List<Point> extractRec(VObject vo) {
+    if (vo.getType() == VObject.VObjectType.LEAF) {
+      return ((VLeaf) vo).getRecords();
+    }
+    if (vo.getType() == VObject.VObjectType.PRUNED) {
+      return new ArrayList<Point>();
+    }
+    //
+    List<Point> result = new ArrayList<Point>();
+    VContainer cont = (VContainer) vo;
+    for (int i = 0; i < cont.size(); i++) {
+      List<Point> partial = extractRec(cont.get(i));
+      result.addAll(partial);
+    }
+    return result;
+  }
+  */
+
+}
+
+/**
+
    public static List<Point> filter(List<Point> pts, Rectangle query) {
      List<Point> result = new ArrayList<Point>();
      pts.forEach((p) -> {
@@ -93,4 +186,4 @@
         }
       }
     }
- }
+**/
