@@ -23,7 +23,7 @@ public final class Query {
   }
 
   /**
-  * This method
+  * Recursive lookup.
   */
   public static VObject treeSearchRec(MRTreeNode T, Rectangle query) {
     // If the node is a leaf, we construct a VO with all its points.
@@ -46,18 +46,18 @@ public final class Query {
   }
 
   /**
-  *
+  * Verification algorithm.
   */
   public static VResult verify(VObject vo) {
     // Reconstruct a leaf node.
-    if (vo.getType() == VObject.VObjectType.LEAF) {
+    if (vo instanceof VLeaf) {
       List<Point> records = ((VLeaf) vo).getRecords();
       Rectangle MBR = Geometry.MBR(records);
       byte[] h = Hash.hashPoints(records);
       return new VResult(records, MBR, h);
     }
     // Reconstruct a pruned internal node.
-    if (vo.getType() == VObject.VObjectType.PRUNED) {
+    if (vo instanceof VPruned) {
       VPruned pr = ((VPruned) vo);
       return new VResult(new ArrayList<Point>(), pr.getMBR(), pr.getHash());
     }

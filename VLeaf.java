@@ -6,7 +6,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class VLeaf extends VObject {
+public class VLeaf implements VObject {
 
   /**
   *
@@ -17,7 +17,6 @@ public class VLeaf extends VObject {
   *
   */
   public VLeaf(List<Point> records) {
-    this.type = VObjectType.LEAF;
     this.records = new ArrayList<Point>();
     this.records.addAll(records);
   }

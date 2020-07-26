@@ -1,6 +1,6 @@
 /**
 * File:		Geometry.java
-* Author:	Matteo Loporchio, 491283
+* @author	Matteo Loporchio, 491283
 */
 
 import java.util.List;
@@ -10,9 +10,9 @@ public final class Geometry {
   /**
   * The empty rectangle has (inf, inf, -inf, -inf) as vertices.
   */
-  public static final Rectangle EMPTY_RECT = new Rectangle(
-  Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY,
-  Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
+  public static final Rectangle EMPTY_RECT =
+    new Rectangle(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY,
+    Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
 
   // This function returns true if and only if a point lies inside a rectangle.
   public static boolean contains(Rectangle r, Point p) {

@@ -3,7 +3,7 @@
 *
 */
 
-public class VPruned extends VObject {
+public class VPruned implements VObject {
 
   /**
   *
@@ -19,7 +19,6 @@ public class VPruned extends VObject {
   *
   */
   public VPruned(Rectangle MBR, byte[] hash) {
-    this.type = VObjectType.PRUNED;
     this.MBR = MBR;
     this.hash = hash;
   }

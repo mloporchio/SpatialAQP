@@ -1,6 +1,6 @@
 /**
 * File:		Blockchain.java
-* Author:	Matteo Loporchio, 491283
+* @author	Matteo Loporchio, 491283
 */
 
 import java.util.List;

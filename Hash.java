@@ -1,6 +1,6 @@
 /**
 *  File:     Hash.java
-*  Author:   Matteo Loporchio, 491283
+*  @author   Matteo Loporchio, 491283
 */
 
 import java.io.*;

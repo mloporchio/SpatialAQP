@@ -9,7 +9,7 @@ import java.util.List;
 /**
 *
 */
-public class VContainer extends VObject {
+public class VContainer implements VObject {
 
   /**
   * This list contains several verification objects.
@@ -20,7 +20,6 @@ public class VContainer extends VObject {
   *
   */
   public VContainer() {
-    type = VObjectType.CONTAINER;
     list = new ArrayList<VObject>();
   }
 
