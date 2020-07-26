@@ -1,7 +1,9 @@
 /**
 * File:   SkipListEntry.java
-* Author: Matteo Loporchio, 491283
+* @author Matteo Loporchio, 491283
 */
+
+import java.util.*;
 
 public class SkipListEntry {
   /**
@@ -17,24 +19,31 @@ public class SkipListEntry {
   /**
   * Hash of the MBR of all skipped blocks.
   */
-  private byte[] rectHash;
+  private byte[] MBRHash;
+
+  /**
+  *
+  */
+  private List<byte[]> digests;
 
   /**
   *
   */
   public SkipListEntry() {
     this.ref = null;
-    this.MBR = null;
-    this.rectHash = null;
+    this.MBR = Geometry.EMPTY_RECT;
+    this.MBRHash = Hash.hashRectangle(this.MBR);
+    this.digests = new ArrayList<byte[]>();
   }
 
   /**
   *
   */
-  public SkipListEntry(byte[] ref, Rectangle MBR, byte[] rectHash) {
+  public SkipListEntry(byte[] ref, Rectangle MBR, byte[] MBRHash) {
     this.ref = ref;
     this.MBR = MBR;
-    this.rectHash = rectHash;
+    this.MBRHash = MBRHash;
+    this.digests = new ArrayList<byte[]>();
   }
 
   /**
@@ -68,15 +77,15 @@ public class SkipListEntry {
   /**
   *
   */
-  public byte[] getRectHash() {
-    return rectHash;
+  public byte[] getMBRHash() {
+    return MBRHash;
   }
 
   /**
   *
   */
-  public void setRectHash(byte[] rectHash) {
-    this.rectHash = rectHash;
+  public void setMBRHash(byte[] MBRHash) {
+    this.MBRHash = MBRHash;
   }
 
 }

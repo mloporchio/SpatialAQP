@@ -16,19 +16,22 @@ public class TestChain {
     try {
       // Read the file name.
       String filename = args[0];
-      // Read the page capacity from input.
-      int c = Integer.parseInt(args[1]);
+      // Read the page capacity and size of the skip list from input.
+      int c = Integer.parseInt(args[1]),
+      m = Integer.parseInt(args[2]);
       // Build the blockchain.
       long tStart = System.nanoTime();
-      Blockchain chain = Utility.readChainB(filename, c);
+      Blockchain chain = Utility.readChainB(filename, c, m);
       long tEnd = System.nanoTime();
       System.out.println("Blocks read: " + chain.getSize());
       System.out.println("Index capacity: " + c);
+      System.out.println("Skip list size: " + m);
       System.out.println("Elapsed time: " + (tEnd - tStart)/1000000 + " ms");
       // Get the last block of the chain and print its skip list.
       Block last = chain.getLastBlock();
-      for (int i = 0; i < last.skip.length; i++) {
-        byte[] ref = last.skip[i].getRef();
+      SkipListEntry[] skip = last.getSkip();
+      for (int i = 0; i < skip.length; i++) {
+        byte[] ref = skip[i].getRef();
         System.out.println("Entry: " + i + "\tId: " +
         ((ref != null) ? chain.getBlock(ref).id : "(null)"));
       }

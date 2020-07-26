@@ -1,16 +1,23 @@
 /**
 * File:		Point.java
-* Author:	Matteo Loporchio, 491283
+* @author	Matteo Loporchio, 491283
 */
 
 public class Point implements Comparable<Point> {
+	/**
+	*	The x-coordinate of the point.
+	*/
 	public final double x;
+
+	/**
+	*	The y-coordinate of the point.
+	*/
 	public final double y;
 
 	/**
-	*	This is the default constructor.
-	*	@param x the x-coordinate
-	*	@param y the y-coordinate
+	*	Constructs a new point given its coordinates.
+	*	@param x the x-coordinate of the point
+	*	@param y the y-coordinate of the point
 	*/
 	public Point(double x, double y) {
 		this.x = x;
@@ -18,7 +25,7 @@ public class Point implements Comparable<Point> {
 	}
 
 	/**
-	*	Method for comparison.
+	*	Comparison function.
 	*	@param p the point to be compared with the current one
 	*	@return an integer
 	*/

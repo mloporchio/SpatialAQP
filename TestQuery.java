@@ -12,6 +12,7 @@ public class TestQuery {
       String filename = args[0];
       // Read the page capacity from input.
       int c = Integer.parseInt(args[1]);
+
       // Read the records from a file.
       List<Point> records = Utility.readPointsB(filename);
 

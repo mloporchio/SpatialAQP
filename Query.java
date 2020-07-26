@@ -8,7 +8,11 @@ import java.util.*;
 public final class Query {
 
   /**
-  *
+  * Given a list of points and a rectangle, returns all the points
+  * that lie inside the rectangle.
+  * @param pts list of points
+  * @param query rectangle
+  * @return list of points inside the rectangle
   */
   public static List<Point> filter(List<Point> pts, Rectangle query) {
     List<Point> result = new ArrayList<Point>();
@@ -78,27 +82,6 @@ public final class Query {
     byte[] hash = Hash.reconstruct(rects, hashes);
     return new VResult(records, u, hash);
   }
-
-  /**
-  *
-  *
-  public static List<Point> extractRec(VObject vo) {
-    if (vo.getType() == VObject.VObjectType.LEAF) {
-      return ((VLeaf) vo).getRecords();
-    }
-    if (vo.getType() == VObject.VObjectType.PRUNED) {
-      return new ArrayList<Point>();
-    }
-    //
-    List<Point> result = new ArrayList<Point>();
-    VContainer cont = (VContainer) vo;
-    for (int i = 0; i < cont.size(); i++) {
-      List<Point> partial = extractRec(cont.get(i));
-      result.addAll(partial);
-    }
-    return result;
-  }
-  */
 
 }
 

@@ -33,13 +33,13 @@ public class Utility {
   * from a given binary file. The index inside each block is built
   * with a page capacity equal to c.
   */
-  public static Blockchain readChainB(String filename, int c) throws Exception
-  {
+  public static Blockchain readChainB(String filename, int c, int m)
+  throws Exception {
     Path path = Paths.get(filename);
     byte[] content = Files.readAllBytes(path);
     ByteBuffer buf = ByteBuffer.wrap(content);
     // Create a new blockchain object.
-    Blockchain chain = new Blockchain(c, Global.SKIP_LIST_SIZE);
+    Blockchain chain = new Blockchain(c, m);
     // Read the number of blocks.
     int nblocks = buf.getInt();
     // Now, for each block...

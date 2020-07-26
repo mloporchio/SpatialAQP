@@ -12,7 +12,7 @@ import java.util.*;
 *	This class contains several methods to compute the hash values
 *	of geometric elements (e.g. points and rectangles)
 */
-class Hash {
+public final class Hash {
 
 	/**
 	*	This function computes the hash value of a 2D point.
@@ -74,9 +74,9 @@ class Hash {
 			ByteArrayOutputStream strm = new ByteArrayOutputStream();
 			// Read the content of all children.
 			for (MRTreeNode c : children) {
-				Rectangle MBR = c.getMBR();
-				byte[] rbuf = ByteBuffer.allocate(64).putDouble(MBR.lx).
-				putDouble(MBR.ly).putDouble(MBR.ux).putDouble(MBR.uy).array();
+				Rectangle r = c.getMBR();
+				byte[] rbuf = ByteBuffer.allocate(64).putDouble(r.lx).
+				putDouble(r.ly).putDouble(r.ux).putDouble(r.uy).array();
 				strm.write(rbuf);
 				strm.write(c.getHash());
 			}
@@ -102,7 +102,7 @@ class Hash {
 				putDouble(r.ly).putDouble(r.ux).putDouble(r.uy).array();
 				strm.write(skip[i].getRef());
 				strm.write(rbuf);
-				strm.write(skip[i].getRectHash());
+				strm.write(skip[i].getMBRHash());
 			}
 			return digest.digest(strm.toByteArray());
 		}
@@ -120,10 +120,10 @@ class Hash {
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
 			ByteArrayOutputStream strm = new ByteArrayOutputStream();
-			strm.write((b.prev != null) ? b.prev : Global.ZERO_BYTES);
-			strm.write((b.indexHash != null) ? b.indexHash : Global.ZERO_BYTES);
-			strm.write((b.skipHash != null) ? b.skipHash : Global.ZERO_BYTES);
-			strm.write(hashPoints(b.content));
+			strm.write((b.getPrev() != null) ? b.getPrev() : new byte[32]);
+			strm.write((b.getIndexHash() != null) ? b.getIndexHash() : new byte[32]);
+			strm.write((b.getSkipHash() != null) ? b.getSkipHash() : new byte[32]);
+			strm.write(hashPoints(b.getContent()));
 			return digest.digest(strm.toByteArray());
 		}
 		catch (Exception e) {

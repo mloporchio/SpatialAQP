@@ -8,10 +8,14 @@ import java.util.*;
 public final class MRTree {
 
   /**
+  * This value is the default page capacity for the MR-tree.
+  */
+  public static final int DEFAULT_CAPACITY = 20;
+
+  /**
   *
   */
   public static MRTreeNode buildPacked(List<Point> pts, int c) {
-    //
     List<MRTreeNode> current = new ArrayList<MRTreeNode>();
     // Sort the points in ascending order.
     Collections.sort(pts);
