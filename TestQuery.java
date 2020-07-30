@@ -23,7 +23,7 @@ public class TestQuery {
 
       // Query the index.
       long qstart = System.nanoTime();
-      VObject vo = Query.treeSearchRec(T, new Rectangle(0.5, 0.5, 1.0, 1.0));
+      VObject vo = Query.treeSearchIt(T, new Rectangle(0.5, 0.5, 1.0, 1.0));
       long qend = System.nanoTime();
 
       // Verify the results.

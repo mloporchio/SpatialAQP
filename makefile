@@ -21,6 +21,7 @@ CLASSES = \
 	Hash.java \
 	MRTree.java \
 	MRTreeNode.java \
+	Pair.java \
 	Point.java \
 	Query.java \
 	Rectangle.java \

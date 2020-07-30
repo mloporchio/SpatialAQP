@@ -37,12 +37,40 @@ public final class Query {
     // Otherwise, we need to explore recursively all subtrees rooted in
     // the current node.
     VContainer cont = new VContainer();
-    List<Point> result = new ArrayList<Point>();
     T.getChildren().forEach((n) -> {
       VObject partial = treeSearchRec(n, query);
       cont.append(partial);
     });
     return cont;
+  }
+
+  /**
+  * This method can be used to query the MR-tree index in order
+  * to retrieve all points (iterative version).
+  */
+  public static VObject treeSearchIt(MRTreeNode T, Rectangle query) {
+    LinkedList<Pair<MRTreeNode, VObject>> q = new LinkedList<>();
+    q.add(new Pair<>(T, null));
+    VObject result = null;
+    while (!q.isEmpty()) {
+      Pair<MRTreeNode, VObject> curr = q.remove();
+      MRTreeNode currNode = curr.getFirst();
+      VObject parentVO = curr.getSecond();
+      VObject currVO = null;
+      if (currNode.isLeaf()) currVO = new VLeaf(currNode.getData());
+      else {
+        if (!Geometry.intersect(currNode.getMBR(), query))
+          currVO = new VPruned(currNode.getMBR(), currNode.getHash());
+        else {
+          currVO = new VContainer();
+          for (MRTreeNode n : currNode.getChildren())
+            q.add(new Pair<>(n, currVO));
+        }
+      }
+      if (parentVO != null) ((VContainer) parentVO).append(currVO);
+      else result = currVO;
+    }
+    return result;
   }
 
   /**
