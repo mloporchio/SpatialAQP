@@ -28,7 +28,7 @@ public class TestChain {
       System.out.println("Skip list size: " + m);
       System.out.println("Elapsed time: " + (tEnd - tStart)/1000000 + " ms");
       // Get the last block of the chain and print its skip list.
-      Block last = chain.getLastBlock();
+      Block last = chain.getBlock(chain.getLastHash());
       SkipListEntry[] skip = last.getSkip();
       for (int i = 0; i < skip.length; i++) {
         byte[] ref = skip[i].getRef();

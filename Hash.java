@@ -133,6 +133,22 @@ public final class Hash {
 		}
 	}
 
+	/**
+	*
+	*/
+	public static byte[] aggregate(List<byte[]> hashes) {
+		try {
+			MessageDigest digest = MessageDigest.getInstance("SHA-256");
+			ByteArrayOutputStream strm = new ByteArrayOutputStream();
+			for (byte[] h : hashes) strm.write(h);
+			return digest.digest(strm.toByteArray());
+		}
+		catch (Exception e) {
+			System.err.println("Something went wrong while aggregating hashes!");
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	/**
 	*
@@ -159,6 +175,9 @@ public final class Hash {
 			return null;
 		}
 	}
+
+
+
 
 	/**
 	* Converts an array of bytes to a human-readable hexadecimal string.

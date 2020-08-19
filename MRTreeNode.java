@@ -46,7 +46,7 @@ public class MRTreeNode implements Comparable<MRTreeNode> {
 	}
 
 	/**
-	*
+	*	Returns the list of children 
 	*/
 	public List<MRTreeNode> getChildren() {
 		return children;

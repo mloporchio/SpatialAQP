@@ -8,8 +8,29 @@ import java.util.*;
 public final class Query {
 
   /**
-  * Given a list of points and a rectangle, returns all the points
-  * that lie inside the rectangle.
+  *
+  */
+  private static class MRQueueEntry {
+    private MRTreeNode node;
+    private VObject parentVO;
+
+    public MRQueueEntry(MRTreeNode node, VObject parentVO) {
+      this.node = node;
+      this.parentVO = parentVO;
+    }
+
+    public MRTreeNode getNode() {
+      return node;
+    }
+
+    public VObject getParentVO() {
+      return parentVO;
+    }
+  }
+
+  /**
+  * Given a list of points and a rectangle, this method
+  * returns all points inside the rectangle.
   * @param pts list of points
   * @param query rectangle
   * @return list of points inside the rectangle
@@ -23,7 +44,12 @@ public final class Query {
   }
 
   /**
-  * Recursive lookup.
+  * This method can be used to query the MR-tree index in order
+  * to retrieve all points that belong to the query rectangle.
+  * The search process is recursive.
+  * @param T the root of the MR-tree
+  * @param query the query rectangle
+  * @return a VO for the root
   */
   public static VObject treeSearchRec(MRTreeNode T, Rectangle query) {
     // If the node is a leaf, we construct a VO with all its points.
@@ -46,17 +72,22 @@ public final class Query {
 
   /**
   * This method can be used to query the MR-tree index in order
-  * to retrieve all points (iterative version).
+  * to retrieve all points that belong to the query rectangle.
+  * The search process is iterative.
+  * @param T the root of the MR-tree
+  * @param query the query rectangle
+  * @return a VO for the root
   */
   public static VObject treeSearchIt(MRTreeNode T, Rectangle query) {
-    LinkedList<Pair<MRTreeNode, VObject>> q = new LinkedList<>();
-    q.add(new Pair<>(T, null));
+    Deque<MRQueueEntry> q = new ArrayDeque<>();
+    q.add(new MRQueueEntry(T, null));
     VObject result = null;
     while (!q.isEmpty()) {
-      Pair<MRTreeNode, VObject> curr = q.remove();
-      MRTreeNode currNode = curr.getFirst();
-      VObject parentVO = curr.getSecond();
+      MRQueueEntry curr = q.remove();
+      MRTreeNode currNode = curr.getNode();
+      VObject parentVO = curr.getParentVO();
       VObject currVO = null;
+      // If the current node is a leaf, we construct a VO with all its points.
       if (currNode.isLeaf()) currVO = new VLeaf(currNode.getData());
       else {
         if (!Geometry.intersect(currNode.getMBR(), query))
@@ -64,14 +95,33 @@ public final class Query {
         else {
           currVO = new VContainer();
           for (MRTreeNode n : currNode.getChildren())
-            q.add(new Pair<>(n, currVO));
+            q.add(new MRQueueEntry(n, currVO));
         }
       }
+      // If the current node has a parent,
       if (parentVO != null) ((VContainer) parentVO).append(currVO);
       else result = currVO;
     }
     return result;
   }
+
+
+  /**
+  * Chain search algorithm.
+  */
+  /*
+  public static VObject chainSearch(Blockchain b, Rectangle query) {
+    VObject result = null;
+    byte[] currHash = b.getLastHash();
+    while (currHash != null) {
+      Block currBlock = b.getBlock(currHash);
+      Rectangle currRect = currBlock.getIndex().getMBR();
+
+      //
+      currHash = currBlock.getPrev();
+    }
+    return result;
+  }*/
 
   /**
   * Verification algorithm.
@@ -110,91 +160,4 @@ public final class Query {
     byte[] hash = Hash.reconstruct(rects, hashes);
     return new VResult(records, u, hash);
   }
-
 }
-
-/**
-
-   public static List<Point> filter(List<Point> pts, Rectangle query) {
-     List<Point> result = new ArrayList<Point>();
-     pts.forEach((p) -> {
-       if (Geometry.contains(query, p)) result.add(p);
-     });
-     return result;
-   }
-
-   public static void filterExt(List<Point> pts, Rectangle query,
-   List<Point> result) {
-     pts.forEach((p) -> {
-       if (Geometry.contains(query, p)) result.add(p);
-     });
-   }
-
-   // Recursive version of tree search.
-   public static List<Point> treeSearchRec(MRTreeNode T, Rectangle query) {
-   		// If the node is a leaf, we need to scan its data points.
-   		if (T.isLeaf()) return filter(T.getData(), query);
-   		// Otherwise, we need to check if the MBR of the node intersects
-      // the query rectangle.
-      // If this is not the case, then the subtree will not contain any
-      // interesting record.
-   		if (!Geometry.intersect(T.getMBR(), query))
-        return new ArrayList<Point>();
-      // Otherwise, we need to explore recursively all subtrees rooted in
-      // the current node.
-      List<Point> result = new ArrayList<Point>();
-      T.getChildren().forEach((n) -> {
-        List<Point> partial = treeSearchRec(n, query);
-        result.addAll(partial);
-      });
-      return result;
-   	}
-
-    // Iterative version of the previous algorithm.
-    // Check: https://www.baeldung.com/java-depth-first-search
-    public static List<Point> treeSearchIt(MRTreeNode T, Rectangle query) {
-      List<Point> result = new ArrayList<Point>();
-      Stack<MRTreeNode> s = new Stack<MRTreeNode>();
-      MRTreeNode curr = T;
-      s.push(T);
-      while (!s.isEmpty()) {
-        curr = s.pop();
-        // Check what kind of node we have reached.
-        // If the node is a leaf, then we need to scan its data points.
-        if (curr.isLeaf()) result.addAll(filter(curr.getData(), query));
-        // Otherwise it is an internal node.
-        else {
-          // We only need to explore its children
-          // if its MBR intersects the query rectangle.
-          if (Geometry.intersect(curr.getMBR(), query))
-            curr.getChildren().forEach((n) -> s.push(n));
-        }
-      }
-      return result;
-    }
-
-    // Optimized version of the iterative algorithm.
-    public static void treeSearchExt(MRTreeNode T, Rectangle query,
-    List<Point> result) {
-      Stack<MRTreeNode> s = new Stack<MRTreeNode>();
-      MRTreeNode curr = T;
-      s.push(T);
-      while (!s.isEmpty()) {
-        curr = s.pop();
-        // Check what kind of node we have reached.
-        // If the node is a leaf, then we need to scan its data points.
-        if (curr.isLeaf()) {
-          curr.getData().forEach((p) -> {
-            if (Geometry.contains(query, p)) result.add(p);
-          });
-        }
-        // Otherwise it is an internal node.
-        else {
-          // We only need to explore its children
-          // if its MBR intersects the query rectangle.
-          if (Geometry.intersect(curr.getMBR(), query))
-            curr.getChildren().forEach((n) -> s.push(n));
-        }
-      }
-    }
-**/

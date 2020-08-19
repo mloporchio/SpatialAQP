@@ -15,7 +15,7 @@ public class TestIndex {
       // Read the page capacity from input.
       int c = Integer.parseInt(args[0]);
       // Read the contents from a file.
-      List<Point> pts = Utility.readPointsB("test/records.bin");
+      List<Point> pts = Utility.readPointsB(args[1]);
       // Read the number of records.
       int nrec = pts.size();
       // Time the execution of the construction algorithm.

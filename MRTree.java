@@ -13,7 +13,12 @@ public final class MRTree {
   public static final int DEFAULT_CAPACITY = 20;
 
   /**
-  *
+  * Constructs a MR-tree index from a given list of points with
+  * the packed algorithm.
+  * The nodes of the tree have a fixed capacity.
+  * @param pts list of points
+  * @param c page capacity
+  * @return a MR-tree index
   */
   public static MRTreeNode buildPacked(List<Point> pts, int c) {
     List<MRTreeNode> current = new ArrayList<MRTreeNode>();
@@ -37,5 +42,11 @@ public final class MRTree {
     // Return the root of the MR-tree, i.e. the only node left.
     return current.get(0);
   }
+
+  /*
+  public static MRTreeNode buildSTR(List<Point> pts, int c) {
+    int n = pts.size(), p = Math.ceil(n/c);
+    Math.ceil(Math.sqrt(p));
+  }*/
 
 }

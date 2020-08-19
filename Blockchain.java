@@ -29,7 +29,16 @@ public class Blockchain {
 	}
 
   /**
-  * @return a reference to the last block in the chain.
+  * Returns the hash of the last block of the chain.
+  * @return hash of the last block
+  */
+  public byte[] getLastHash() {
+    return last;
+  }
+
+  /**
+  * Returns a reference to the last block of the chain.
+  * @return reference to the last block
   */
   public Block getLastBlock() {
     if (last == null) return null;
@@ -37,22 +46,24 @@ public class Blockchain {
   }
 
   /**
-  * @return a reference to the block with the given address.
+  * Returns a reference to the block with the given address.
+  * @return reference to the block
   */
   public Block getBlock(byte[] ref) {
     return storage.get(ref);
   }
 
   /**
-  * @return the number of blocks that are currently inserted in the chain.
+  * Returns the number of currently inserted blocks
+  * (i.e. the length of the blockchain).
+  * @return number of inserted blocks
   */
   public int getSize() {
     return storage.size();
   }
 
   /**
-  * This method creates a new block with the sepecified content
-  * and appends it to the chain.
+  * Creates a new block containing the and appends it to the chain.
   * @return the hash value of the new block
   */
   public byte[] append(List<Point> content) throws Exception {

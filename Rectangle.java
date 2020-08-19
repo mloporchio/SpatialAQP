@@ -39,6 +39,39 @@ public class Rectangle implements Comparable<Rectangle> {
 	}
 
 	/**
+	*	Computes the width of the rectangle.
+	*	@return the rectangle width
+	*/
+	public double getWidth() {
+		return ux-lx;
+	}
+
+	/**
+	*	Computes the height of the rectangle.
+	*	@return the rectangle height
+	*/
+	public double getHeight() {
+		return uy-ly;
+	}
+
+	/**
+	*	Computes the area of the rectangle.
+	* @return the rectangle area
+	*/
+	public double getArea() {
+		return (ux-lx)*(uy-ly);
+	}
+
+
+	/**
+	*	Computes the centroid of the rectangle.
+	*	@return a point corresponding to the centroid
+	*/
+	public Point getCentroid() {
+		return new Point(lx + getWidth() / 2, ly + getHeight() / 2);
+	}
+
+	/**
 	*	Comparison function for rectangles.
 	*	To compare two rectangles, we just compare their lower-left vertices.
 	* @param r rectangle to be compared with the current one

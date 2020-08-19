@@ -22,9 +22,14 @@ public class SkipListEntry {
   private byte[] MBRHash;
 
   /**
+  * List
+  */
+  private List<byte[]> hashes;
+
+  /**
   *
   */
-  private List<byte[]> digests;
+  private byte[] aggHash;
 
   /**
   *
@@ -33,21 +38,13 @@ public class SkipListEntry {
     this.ref = null;
     this.MBR = Geometry.EMPTY_RECT;
     this.MBRHash = Hash.hashRectangle(this.MBR);
-    this.digests = new ArrayList<byte[]>();
+    this.hashes = new ArrayList<byte[]>();
+    this.aggHash = null;
   }
 
   /**
-  *
-  */
-  public SkipListEntry(byte[] ref, Rectangle MBR, byte[] MBRHash) {
-    this.ref = ref;
-    this.MBR = MBR;
-    this.MBRHash = MBRHash;
-    this.digests = new ArrayList<byte[]>();
-  }
-
-  /**
-  *
+  * Returns the hash of the target block.
+  * @return hash of the target block
   */
   public byte[] getRef() {
     return ref;
@@ -72,6 +69,7 @@ public class SkipListEntry {
   */
   public void setMBR(Rectangle MBR) {
     this.MBR = MBR;
+    this.MBRHash = Hash.hashRectangle(MBR);
   }
 
   /**
@@ -84,8 +82,25 @@ public class SkipListEntry {
   /**
   *
   */
-  public void setMBRHash(byte[] MBRHash) {
-    this.MBRHash = MBRHash;
+  public List<byte[]> duplicateHashes() {
+    return new ArrayList<byte[]>(hashes);
   }
+
+  /**
+  *
+  */
+  public void setHashes(List<byte[]> hashes) {
+    this.hashes = hashes;
+    this.aggHash = Hash.aggregate(hashes);
+  }
+
+  /**
+  *
+  */
+  public byte[] getAggHash() {
+    return aggHash;
+  }
+
+
 
 }
