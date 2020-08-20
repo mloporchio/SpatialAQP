@@ -7,7 +7,6 @@
 
     Usage:
     python generate_records.py <filename> <nrec> <minval> <maxval>
-
 """
 
 import random

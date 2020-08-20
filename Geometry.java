@@ -1,10 +1,10 @@
-/**
-* File:		Geometry.java
-* @author	Matteo Loporchio, 491283
-*/
-
 import java.util.List;
 
+/**
+* This class contains a set of utility functions to work
+* with points and rectangles.
+* @author	Matteo Loporchio, 491283
+*/
 public final class Geometry {
 
   /**
@@ -14,7 +14,13 @@ public final class Geometry {
     new Rectangle(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY,
     Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
 
-  // This function returns true if and only if a point lies inside a rectangle.
+  /**
+  * This function returns true if and only if
+  * the given point is inside the given rectangle.
+  * @param r rectangle
+  * @param p point
+  * @return true if p is inside r, false otherwise
+  */
   public static boolean contains(Rectangle r, Point p) {
     return (r.lx <= p.x && p.x <= r.ux && r.ly <= p.y && p.y <= r.uy);
   }

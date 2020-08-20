@@ -1,8 +1,3 @@
-/**
-*  File:     Hash.java
-*  @author   Matteo Loporchio, 491283
-*/
-
 import java.io.*;
 import java.nio.*;
 import java.security.*;
@@ -10,12 +5,16 @@ import java.util.*;
 
 /**
 *	This class contains several methods to compute the hash values
-*	of geometric elements (e.g. points and rectangles)
+*	of geometric elements (e.g. points and rectangles) and blockchain
+*	elements (e.g. blocks, skip lists).
+*	@author Matteo Loporchio, 491283
 */
 public final class Hash {
 
 	/**
 	*	This function computes the hash value of a 2D point.
+	*	@param p point to be hashed
+	*	@return an array of bytes representing the hash value
 	*/
 	public static byte[] hashPoint(Point p) {
 		try {
@@ -33,6 +32,8 @@ public final class Hash {
 
 	/**
 	*	This function computes the hash value of a list of 2D points.
+	*	@param pts the list of points to be hashed
+	*	@return an array of bytes representing the hash value
 	*/
 	public static byte[] hashPoints(List<Point> pts) {
 		try {

@@ -1,23 +1,20 @@
-/**
-*  File:    TestIndex.java
-*  Author:  Matteo Loporchio, 491283
-*
-*  In this file we test the construction of a MR-tree index for
-*  a certain set of 2D records. We measure the construction time
-*  in milliseconds.
-*/
-
 import java.util.*;
 
+/**
+* With this class we test the construction of a MR-tree index for
+* a certain set of 2D records. We measure the construction time
+* in milliseconds.
+* @author Matteo Loporchio, 491283
+*/
 public class TestIndex {
   public static void main(String[] args) {
     try {
-      // Read the page capacity from input.
-      int c = Integer.parseInt(args[0]);
-      // Read the contents from a file.
-      List<Point> pts = Utility.readPointsB(args[1]);
+      // Read the contents from file.
+      List<Point> pts = Utility.readPointsB(args[0]);
       // Read the number of records.
       int nrec = pts.size();
+      // Read the page capacity from input.
+      int c = Integer.parseInt(args[1]);
       // Time the execution of the construction algorithm.
       long tStart = System.nanoTime();
       MRTreeNode T = MRTree.buildPacked(pts, c);
