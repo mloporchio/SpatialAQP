@@ -24,6 +24,8 @@ def generate_records_bin(filename, nrec, minval, maxval):
 def main(argv):
     if len(argv) < 5:
         print("Error: too few arguments!")
+        print("Usage:\
+        python generate_records.py <filename> <nrec> <minval> <maxval>")
         return
     filename = argv[1]
     nrec = int(argv[2])

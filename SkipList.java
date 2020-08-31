@@ -1,10 +1,10 @@
-/**
-* File:   SkipList.java
-* Author: Matteo Loporchio, 491283
-*/
-
 import java.util.*;
 
+/**
+* This class represents the skip list data structure that is
+* included in each block to speed up the lookup process.
+* @author Matteo Loporchio, 491283
+*/
 public final class SkipList {
 
   /**
@@ -23,18 +23,21 @@ public final class SkipList {
     SkipListEntry[] skip = new SkipListEntry[m];
     for (int i = 0; i < skip.length; i++) skip[i] = new SkipListEntry();
     // Check the last inserted block.
-    Block curr = b.getLastBlock();
-    // If the reference is null, the chain is currently empty and
+    byte[] last = b.getLast();
+    // If the hash is null, the chain is currently empty and
     // there is nothing to compute for the skip list of the next block.
-    if (curr == null) return skip;
-    // O
+    if (last == null) return skip;
+    // Otherwise we obtain a reference to the last block.
+    Block curr = b.getBlock(last);
     Rectangle currRect = curr.getIndex().getMBR();
     skip[0].setMBR(currRect);
-    // If the last block of the chain is also the only one
+    //
+    b.addToCache(last);
+    // If the last block of the chain is also the only one we are done.
     if (curr.getPrev() == null) return skip;
     // Otherwise the first entry will point to block i-2.
     skip[0].setRef(curr.getPrev());
-    skip[0].setHashes(Arrays.asList(b.getLastHash()));
+    skip[0].setAggHash(last);
     // Now we must fill the other entries...
     for (int i = 1; i < skip.length; i++) {
       curr = b.getBlock(skip[i-1].getRef());
@@ -46,11 +49,8 @@ public final class SkipList {
       // Compute the MBR for all skipped blocks.
       skip[i].setMBR(Geometry.enlarge(Arrays.asList(skip[i-1].getMBR(),
       curr.getIndex().getMBR(), currSkip[i-1].getMBR())));
-      // Compute the hashes.
-      List<byte[]> hashes = skip[i-1].duplicateHashes();
-      hashes.remove(skip[i].getRef());
-      hashes.add(b.getLastHash());
-      skip[i].setHashes(hashes);
+      // Compute the aggregate hash.
+      skip[i].setAggHash(Hash.aggregate(b.getCache(), i));
     }
     return skip;
   }

@@ -43,10 +43,4 @@ public final class MRTree {
     return current.get(0);
   }
 
-  /*
-  public static MRTreeNode buildSTR(List<Point> pts, int c) {
-    int n = pts.size(), p = Math.ceil(n/c);
-    Math.ceil(Math.sqrt(p));
-  }*/
-
 }

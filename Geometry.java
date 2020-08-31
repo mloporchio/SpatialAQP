@@ -8,7 +8,8 @@ import java.util.List;
 public final class Geometry {
 
   /**
-  * The empty rectangle has (inf, inf, -inf, -inf) as vertices.
+  * This is the empty rectangle, whose lower-left vertex is (inf, inf)
+  * and the upper-right one is (-inf, -inf).
   */
   public static final Rectangle EMPTY_RECT =
     new Rectangle(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY,
@@ -25,7 +26,11 @@ public final class Geometry {
     return (r.lx <= p.x && p.x <= r.ux && r.ly <= p.y && p.y <= r.uy);
   }
 
-  // This function returns true if and only if two rectangles overlap.
+  /**
+  * This function returns true if and only if two rectangles overlap.
+  * @param
+  * @param
+  */
   public static boolean intersect(Rectangle r1, Rectangle r2) {
     boolean above = (r1.ly >= r2.uy), // r1 is above r2
     below = (r1.uy <= r2.ly), // r1 is below r2
@@ -34,7 +39,11 @@ public final class Geometry {
     return !(above || below || left || right);
   }
 
-  // This function computes the MBR from a set of points.
+  /**
+  * Computes the MBR for a set of points.
+  * @param pts list of points
+  * @return MBR of the list of points
+  */
   public static Rectangle MBR(List<Point> pts) {
     double lx = Double.POSITIVE_INFINITY, ly = Double.POSITIVE_INFINITY,
     ux = Double.NEGATIVE_INFINITY, uy = Double.NEGATIVE_INFINITY;
@@ -47,7 +56,12 @@ public final class Geometry {
     return new Rectangle(lx, ly, ux, uy);
   }
 
-  // Computes the union between two rectangles.
+  /**
+  * Computes the minimum bounding union between two rectangles.
+  * @param r1 first rectangle
+  * @param r2 second rectangle
+  * @return minimum bounding union of the two rectangles
+  */
   public static Rectangle enlarge(Rectangle r1, Rectangle r2) {
     return new Rectangle(
       Math.min(r1.lx, r2.lx),
@@ -57,7 +71,11 @@ public final class Geometry {
     );
   }
 
-  // Computes the union of a list of rectangles.
+  /**
+  * Computes the minimum bounding union of a list of rectangles.
+  * @param rects list of rectangles
+  * @return minimum bouding union of the rectangles in the list
+  */
   public static Rectangle enlarge(List<Rectangle> rects) {
     double lx = Double.POSITIVE_INFINITY, ly = Double.POSITIVE_INFINITY,
 		ux = Double.NEGATIVE_INFINITY, uy = Double.NEGATIVE_INFINITY;

@@ -1,10 +1,9 @@
+import java.util.*;
+
 /**
 * File:   Query.java
 * Author: Matteo Loporchio, 491283
 */
-
-import java.util.*;
-
 public final class Query {
 
   /**
@@ -53,13 +52,16 @@ public final class Query {
   */
   public static VObject treeSearchRec(MRTreeNode T, Rectangle query) {
     // If the node is a leaf, we construct a VO with all its points.
-    if (T.isLeaf()) return new VLeaf(T.getData());
+    if (T.isLeaf()) {
+      return new VLeaf(T.getData());
+    }
     // Otherwise, we need to check if the MBR of the node intersects
     // the query rectangle.
     // If this is not the case, then the subtree will not contain any
     // interesting record.
-    if (!Geometry.intersect(T.getMBR(), query))
+    if (!Geometry.intersect(T.getMBR(), query)) {
       return new VPruned(T.getMBR(), T.getHash());
+    }
     // Otherwise, we need to explore recursively all subtrees rooted in
     // the current node.
     VContainer cont = new VContainer();
@@ -155,7 +157,7 @@ public final class Query {
       rects.add(partial.getMBR());
       hashes.add(partial.getHash());
     }
-    // Compute the union of all the MBRs of
+    //
     Rectangle u = Geometry.enlarge(rects);
     byte[] hash = Hash.reconstruct(rects, hashes);
     return new VResult(records, u, hash);

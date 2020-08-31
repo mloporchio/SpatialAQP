@@ -1,10 +1,13 @@
-/**
-* File:   SkipListEntry.java
-* @author Matteo Loporchio, 491283
-*/
-
 import java.util.*;
 
+/**
+* This class represents an entry of a skip list.
+* In each entry we store information that is exploited to speed up
+* the search along the entire blockchain, while guaranteeing the
+* authenticity of the results.
+*
+* @author Matteo Loporchio, 491283
+*/
 public class SkipListEntry {
   /**
   * Hash of the destination block.
@@ -22,23 +25,17 @@ public class SkipListEntry {
   private byte[] MBRHash;
 
   /**
-  * List
-  */
-  private List<byte[]> hashes;
-
-  /**
-  *
+  * Aggregate hash of all skipped blocks.
   */
   private byte[] aggHash;
 
   /**
-  *
+  * This is the default constructor for the skip list entry.
   */
   public SkipListEntry() {
     this.ref = null;
     this.MBR = Geometry.EMPTY_RECT;
     this.MBRHash = Hash.hashRectangle(this.MBR);
-    this.hashes = new ArrayList<byte[]>();
     this.aggHash = null;
   }
 
@@ -79,20 +76,6 @@ public class SkipListEntry {
     return MBRHash;
   }
 
-  /**
-  *
-  */
-  public List<byte[]> duplicateHashes() {
-    return new ArrayList<byte[]>(hashes);
-  }
-
-  /**
-  *
-  */
-  public void setHashes(List<byte[]> hashes) {
-    this.hashes = hashes;
-    this.aggHash = Hash.aggregate(hashes);
-  }
 
   /**
   *
@@ -101,6 +84,11 @@ public class SkipListEntry {
     return aggHash;
   }
 
-
+  /**
+  *
+  */
+  public void setAggHash(byte[] aggHash) {
+    this.aggHash = aggHash;
+  }
 
 }

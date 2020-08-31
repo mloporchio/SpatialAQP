@@ -1,11 +1,10 @@
-/**
-*
-*
-*/
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+*
+* @author Matteo Loporchio, 491283
+*/
 public class VLeaf implements VObject {
 
   /**

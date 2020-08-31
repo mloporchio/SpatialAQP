@@ -1,10 +1,10 @@
-/**
-* File:		MRTreeNode.java
-* @author	Matteo Loporchio, 491283
-*/
-
 import java.util.*;
 
+/**
+*	This class implements a generic MR-tree node, which can be
+*	either a leaf or an internal node.
+* @author	Matteo Loporchio, 491283
+*/
 public class MRTreeNode implements Comparable<MRTreeNode> {
 	private Rectangle MBR;
 	private byte[] hash;
@@ -13,8 +13,6 @@ public class MRTreeNode implements Comparable<MRTreeNode> {
 
 	/**
 	*	Constructor for the MR-tree node.
-	*	@param MBR
-	*	@param hash
 	*/
 	public MRTreeNode(Rectangle MBR, byte[] hash, List<Point> data,
 	List<MRTreeNode> children) {
@@ -25,28 +23,32 @@ public class MRTreeNode implements Comparable<MRTreeNode> {
 	}
 
 	/**
-	*	@return the MBR of the node
+	*	Returns the minimum bouding rectangle of the node.
+	*	@return MBR of the node
 	*/
 	public Rectangle getMBR() {
 		return MBR;
 	}
 
 	/**
-	*	@return the hash value of the node
+	*	Returns the hash value of the node.
+	*	@return hash value of the node
 	*/
 	public byte[] getHash() {
 		return hash;
 	}
 
 	/**
-	* @return
+	*	Returns the list of records contained in the node.
+	* @return list of points in the node
 	*/
 	public List<Point> getData() {
 		return data;
 	}
 
 	/**
-	*	Returns the list of children 
+	*	Returns the list of children of the node.
+	*	@return list of children of the node
 	*/
 	public List<MRTreeNode> getChildren() {
 		return children;

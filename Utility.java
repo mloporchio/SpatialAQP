@@ -1,8 +1,3 @@
-/**
-* File:		Utility.java
-* Author:	Matteo Loporchio, 491283
-*/
-
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.nio.file.Files;
@@ -10,11 +5,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class Utility {
+/**
+* This class contains a set of static utility methods
+* @author	Matteo Loporchio, 491283
+*/
+public final class Utility {
 
   /**
   * This function reads a binary file containing 2D points and returns
   * a list that contains them.
+  * @param filename path of the input file
+  * @return a list of points
   */
   public static List<Point> readPointsB(String filename) throws Exception {
     Path path = Paths.get(filename);
@@ -32,6 +33,10 @@ public class Utility {
   * This function creates a new blockchain by reading its content
   * from a given binary file. The index inside each block is built
   * with a page capacity equal to c.
+  * @param filename path of the input file
+  * @param c page capacity of the block index
+  * @param m size of the skip list
+  * @return a blockchain object
   */
   public static Blockchain readChainB(String filename, int c, int m)
   throws Exception {
@@ -66,9 +71,10 @@ public class Utility {
   */
   public static <T> List<List<T>> split(List<T> l, int k) {
     List<List<T>> parts = new ArrayList<List<T>>();
-    for (int i = 0; i < l.size(); i += k)
-      parts.add(l.subList(i, Math.min(l.size(), i + k)));
+    for (int i = 0; i < l.size(); i += k) {
       //parts.add(new ArrayList<T>(l.subList(i, Math.min(l.size(), i + k))));
+      parts.add(l.subList(i, Math.min(l.size(), i + k)));
+    }
     return parts;
   }
 }

@@ -1,8 +1,7 @@
 /**
-* File:		Point.java
+* This class represents a 2D point, our basic geometric entity.
 * @author	Matteo Loporchio, 491283
 */
-
 public class Point implements Comparable<Point> {
 	/**
 	*	The x-coordinate of the point.

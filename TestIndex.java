@@ -1,9 +1,10 @@
 import java.util.*;
 
 /**
-* With this class we test the construction of a MR-tree index for
+* This program tests the construction of a MR-tree index for
 * a certain set of 2D records. We measure the construction time
 * in milliseconds.
+*
 * @author Matteo Loporchio, 491283
 */
 public class TestIndex {
@@ -21,7 +22,7 @@ public class TestIndex {
       long tEnd = System.nanoTime();
       System.out.println("Number of records: " + nrec);
       System.out.println("Index capacity: " + c);
-      System.out.println("Elapsed time: " + (tEnd-tStart)/1000000 + " ms");
+      System.out.println("Elapsed time: " + (tEnd-tStart) + " ns");
     }
     catch (Exception e) {
       System.err.println("Something went wrong!");

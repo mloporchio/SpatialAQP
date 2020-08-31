@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
 *	This class contains several methods to compute the hash values
-*	of geometric elements (e.g. points and rectangles) and blockchain
+*	of geometric entities (e.g. points and rectangles) and blockchain
 *	elements (e.g. blocks, skip lists).
 *	@author Matteo Loporchio, 491283
 */
@@ -68,6 +68,8 @@ public final class Hash {
 
 	/**
 	*	This function computes the hash value of a list of nodes.
+	*	@param
+	*	@return
 	*/
 	public static byte[] hashNode(List<MRTreeNode> children) {
 		try {
@@ -138,6 +140,9 @@ public final class Hash {
 	*
 	*/
 	public static byte[] aggregate(List<byte[]> hashes) {
+		// If the list contains only one hash value, return it.
+		if (hashes.size() == 1) return hashes.get(0);
+		// Otherwise we compute the hash of their concatenation.
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
 			ByteArrayOutputStream strm = new ByteArrayOutputStream();
@@ -149,6 +154,15 @@ public final class Hash {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	/**
+	*
+	*/
+	public static byte[] aggregate(List<byte[]> hashes, int i) {
+		int j = ((int) Math.pow(2, i)) - 1;
+		if (j > (hashes.size() - 1)) return null;
+		return aggregate(hashes.subList(0, j));
 	}
 
 	/**
@@ -177,11 +191,10 @@ public final class Hash {
 		}
 	}
 
-
-
-
 	/**
 	* Converts an array of bytes to a human-readable hexadecimal string.
+	*	@param hash
+	*	@return
 	*/
 	public static String bytesToHex(byte[] hash) {
 		StringBuffer hexString = new StringBuffer();

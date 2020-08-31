@@ -1,8 +1,7 @@
 /**
 *
-*
+* @author Matteo Loporchio, 491283
 */
-
 public class VPruned implements VObject {
 
   /**

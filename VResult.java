@@ -1,16 +1,12 @@
-/**
-* File:   VResult.java
-* Author: Matteo Loporchio, 491283
-*/
-
 import java.util.List;
 
 /**
 *
+* @author Matteo Loporchio, 491283
 */
 public class VResult {
   /**
-  * 
+  *
   */
   private List<Point> content;
 

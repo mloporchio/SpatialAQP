@@ -1,13 +1,9 @@
-/**
-* File:   VContainer.java
-* Author: Matteo Loporchio, 491283
-*/
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
 *
+* @author Matteo Loporchio, 491283
 */
 public class VContainer implements VObject {
 
@@ -17,7 +13,7 @@ public class VContainer implements VObject {
   private List<VObject> list;
 
   /**
-  *
+  * 
   */
   public VContainer() {
     list = new ArrayList<VObject>();

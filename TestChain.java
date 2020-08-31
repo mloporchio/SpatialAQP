@@ -1,16 +1,14 @@
-/**
-*  File:     TestChain.java
-*  Author:   Matteo Loporchio, 491283
-*
-*  In this file we test the construction of blockchain by reading
-*  its content from a binary file.
-*  We measure the construction time in milliseconds.
-*
-*  Run this program with <filename> and <page capacity> as parameters.
-*/
-
 import java.util.*;
 
+/**
+* With this class we test the construction of blockchain by reading
+* its content from a binary file.
+* We measure the construction time in milliseconds.
+*
+* Run this program with <filename> and <page capacity> as parameters.
+*
+* @author Matteo Loporchio, 491283
+*/
 public class TestChain {
   public static void main(String[] args) {
     try {
@@ -26,9 +24,9 @@ public class TestChain {
       System.out.println("Blocks read: " + chain.getSize());
       System.out.println("Index capacity: " + c);
       System.out.println("Skip list size: " + m);
-      System.out.println("Elapsed time: " + (tEnd - tStart)/1000000 + " ms");
+      System.out.println("Elapsed time: " + (tEnd - tStart) + " ns");
       // Get the last block of the chain and print its skip list.
-      Block last = chain.getBlock(chain.getLastHash());
+      Block last = chain.getBlock(chain.getLast());
       SkipListEntry[] skip = last.getSkip();
       for (int i = 0; i < skip.length; i++) {
         byte[] ref = skip[i].getRef();
