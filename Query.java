@@ -1,31 +1,11 @@
+
 import java.util.*;
 
 /**
-* File:   Query.java
-* Author: Matteo Loporchio, 491283
+*
+* @author Matteo Loporchio, 491283
 */
 public final class Query {
-
-  /**
-  *
-  */
-  private static class MRQueueEntry {
-    private MRTreeNode node;
-    private VObject parentVO;
-
-    public MRQueueEntry(MRTreeNode node, VObject parentVO) {
-      this.node = node;
-      this.parentVO = parentVO;
-    }
-
-    public MRTreeNode getNode() {
-      return node;
-    }
-
-    public VObject getParentVO() {
-      return parentVO;
-    }
-  }
 
   /**
   * Given a list of points and a rectangle, this method
@@ -50,7 +30,7 @@ public final class Query {
   * @param query the query rectangle
   * @return a VO for the root
   */
-  public static VObject treeSearchRec(MRTreeNode T, Rectangle query) {
+  public static VObject treeSearch(MRTreeNode T, Rectangle query) {
     // If the node is a leaf, we construct a VO with all its points.
     if (T.isLeaf()) {
       return new VLeaf(T.getData());
@@ -66,7 +46,7 @@ public final class Query {
     // the current node.
     VContainer cont = new VContainer();
     T.getChildren().forEach((n) -> {
-      VObject partial = treeSearchRec(n, query);
+      VObject partial = treeSearch(n, query);
       cont.append(partial);
     });
     return cont;
@@ -81,13 +61,13 @@ public final class Query {
   * @return a VO for the root
   */
   public static VObject treeSearchIt(MRTreeNode T, Rectangle query) {
-    Deque<MRQueueEntry> q = new ArrayDeque<>();
-    q.add(new MRQueueEntry(T, null));
+    Deque<Pair<MRTreeNode, VObject>> q = new ArrayDeque<>();
+    q.add(new Pair<MRTreeNode, VObject>(T, null));
     VObject result = null;
     while (!q.isEmpty()) {
-      MRQueueEntry curr = q.remove();
-      MRTreeNode currNode = curr.getNode();
-      VObject parentVO = curr.getParentVO();
+      Pair<MRTreeNode, VObject> curr = q.remove();
+      MRTreeNode currNode = curr.getFirst();
+      VObject parentVO = curr.getSecond();
       VObject currVO = null;
       // If the current node is a leaf, we construct a VO with all its points.
       if (currNode.isLeaf()) currVO = new VLeaf(currNode.getData());
@@ -97,7 +77,7 @@ public final class Query {
         else {
           currVO = new VContainer();
           for (MRTreeNode n : currNode.getChildren())
-            q.add(new MRQueueEntry(n, currVO));
+            q.add(new Pair<MRTreeNode, VObject>(n, currVO));
         }
       }
       // If the current node has a parent,
@@ -106,24 +86,6 @@ public final class Query {
     }
     return result;
   }
-
-
-  /**
-  * Chain search algorithm.
-  */
-  /*
-  public static VObject chainSearch(Blockchain b, Rectangle query) {
-    VObject result = null;
-    byte[] currHash = b.getLastHash();
-    while (currHash != null) {
-      Block currBlock = b.getBlock(currHash);
-      Rectangle currRect = currBlock.getIndex().getMBR();
-
-      //
-      currHash = currBlock.getPrev();
-    }
-    return result;
-  }*/
 
   /**
   * Verification algorithm.
@@ -162,4 +124,124 @@ public final class Query {
     byte[] hash = Hash.reconstruct(rects, hashes);
     return new VResult(records, u, hash);
   }
+
+
+  /**
+  *
+  */
+  public static VResult verifyIt(VObject vo) {
+    VResult result = null;
+    Stack<Pair<VObject, VObject>> s = new Stack<>();
+    Map<VObject, Boolean> visited = new HashMap<>();
+    Map<VObject, List<VResult>> content = new HashMap<>();
+    s.push(new Pair<>(vo, null));
+    visited.put(vo, false);
+    while (!s.isEmpty()) {
+      Pair<VObject, VObject> el = s.peek();
+      VObject curr = el.getFirst();
+      VObject parent = el.getSecond();
+      // Check the nature of the current node.
+      // If it is a container...
+      if (curr instanceof VContainer) {
+        // We check if this node has already been visited.
+        // If this is not the case, we need to push its children
+        // on the stack for exploration.
+        if (!visited.get(curr)) {
+          content.put(curr, new ArrayList<VResult>());
+          VContainer cont = ((VContainer) curr);
+          for (int i = cont.size()-1; i >= 0; i--) {
+            VObject child = cont.get(i);
+            s.push(new Pair<>(child, curr));
+            visited.put(child, false);
+          }
+          visited.put(curr, true);
+        }
+        // On the other hand, we have to reconstruct.
+        else {
+          List<VResult> currContent = content.get(curr);
+          List<Point> records = new ArrayList<Point>();
+          List<Rectangle> rects = new ArrayList<Rectangle>();
+          List<byte[]> hashes = new ArrayList<byte[]>();
+          for (VResult r : currContent) {
+            records.addAll(r.getContent());
+            rects.add(r.getMBR());
+            hashes.add(r.getHash());
+          }
+          Rectangle u = Geometry.enlarge(rects);
+          byte[] h = Hash.reconstruct(rects, hashes);
+          VResult partial = new VResult(records, u, h);
+          if (parent != null) content.get(parent).add(partial);
+          else result = partial;
+          s.pop();
+        }
+      }
+      // Otherwise we have reached a leaf or pruned node.
+      else {
+        VResult partial = null;
+        // If the node is a leaf...
+        if (curr instanceof VLeaf) {
+          List<Point> records = ((VLeaf) curr).getRecords();
+          partial = new VResult(records, Geometry.MBR(records),
+          Hash.hashPoints(records));
+        }
+        // Otherwise it is a pruned node...
+        else {
+          VPruned pr = ((VPruned) curr);
+          partial = new VResult(new ArrayList<Point>(), pr.getMBR(),
+          pr.getHash());
+        }
+        if (parent != null) content.get(parent).add(partial);
+        else result = partial;
+        // In both cases, we pop the node from the stack.
+        s.pop();
+      }
+    }
+    return result;
+  }
+
+
+
+  /**
+  *
+  */
+  public static VObject lookup(Blockchain b, Rectangle query) {
+    VContainer result = new VContainer();
+    byte[] curr = b.getLast();
+    while (curr != null) {
+      Block currBlock = b.getBlock(curr);
+      Rectangle currRect = currBlock.getIndex().getMBR();
+      SkipListEntry[] skip = currBlock.getSkip();
+      SkipListEntry e = null;
+      // We inspect the current block to find matching records.
+      VObject currVO = treeSearchIt(currBlock.getIndex(), query);
+      // Then we examine the skip list entries in reversed order.
+      for (int j = skip.length - 1; j >= 0; j--) {
+        // We skip all entries with a null reference.
+        if (skip[j].getRef() == null) continue;
+        // The search terminates if we find an entry whose MBR
+        // does not intersect the query rectangle.
+        if (!Geometry.intersect(currRect, query)) {
+          e = skip[j];
+          break;
+        }
+      }
+      // At this point, we construct the verification object for the
+      // current block and choose the next one to be examined.
+      List<byte[]> entryHashes = new ArrayList<>();
+      if (e != null) {
+        for (int j = 0; j < skip.length; j++)
+          if (skip[j] != e) entryHashes.add(Hash.hashSkipEntry(skip[j]));
+        curr = e.getRef();
+      }
+      else {
+        for (int j = 0; j < skip.length; j++)
+          entryHashes.add(Hash.hashSkipEntry(skip[j]));
+        curr = currBlock.getPrev();
+      }
+      // Update the content of the VO.
+      result.append(new VBlock(currVO, e, entryHashes));
+    }
+    return result;
+  }
+
 }

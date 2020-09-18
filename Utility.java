@@ -1,3 +1,4 @@
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.nio.file.Files;
@@ -36,10 +37,11 @@ public final class Utility {
   * @param filename path of the input file
   * @param c page capacity of the block index
   * @param m size of the skip list
-  * @return a blockchain object
+  * @return a blockchain result object with the chain and construction times
   */
-  public static Blockchain readChainB(String filename, int c, int m)
+  public static BlockchainRes readChainB(String filename, int c, int m)
   throws Exception {
+    long indexAvg = 0, skipAvg = 0;
     Path path = Paths.get(filename);
     byte[] content = Files.readAllBytes(path);
     ByteBuffer buf = ByteBuffer.wrap(content);
@@ -58,10 +60,54 @@ public final class Utility {
         records.add(new Point(x, y));
       }
       // Create a new block and append it to the chain.
-      chain.append(records);
+      BlockRes res = chain.append(records);
+      indexAvg += res.indexTime;
+      skipAvg += res.skipTime;
     }
-    return chain;
+    return new BlockchainRes(chain, indexAvg/nblocks, skipAvg/nblocks);
   }
+
+  /**
+  *
+  */
+  public static BlockchainRes readChainLarge(String filename, int c, int m)
+  throws Exception {
+    long indexAvg = 0, skipAvg = 0;
+    // Open the file.
+    File f = new File(filename);
+    InputStream is = new BufferedInputStream(new FileInputStream(f));
+    // Create a new blockchain object.
+    Blockchain chain = new Blockchain(c, m);
+    // Read the number of blocks.
+    byte[] buf = new byte[4];
+    is.read(buf);
+    int nblocks = ByteBuffer.wrap(buf).getInt();
+    // Now, for each block...
+    for (int i = 0; i < nblocks; i++) {
+      System.out.println("reading block " + i);
+      // Read the number of records it contains.
+      is.read(buf);
+      int nrec = ByteBuffer.wrap(buf).getInt();
+      // Read the content of the block.
+      byte[] block = new byte[nrec * 16];
+      is.read(block);
+      ByteBuffer blockBuf = ByteBuffer.wrap(block);
+      // Now collect all records and insert them into a list.
+      List<Point> records = new ArrayList<Point>();
+      for (int j = 0; j < nrec; j++) {
+        double x = blockBuf.getDouble(), y = blockBuf.getDouble();
+        records.add(new Point(x, y));
+      }
+      // Create a new block and append it to the chain.
+      BlockRes res = chain.append(records);
+      indexAvg += res.indexTime;
+      skipAvg += res.skipTime;
+    }
+    is.close();
+    return new BlockchainRes(chain, indexAvg/nblocks, skipAvg/nblocks);
+  }
+
+
 
   /**
   * This function chops a list into sublists of a given length.

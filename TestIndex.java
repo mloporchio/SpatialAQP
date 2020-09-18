@@ -3,7 +3,7 @@ import java.util.*;
 /**
 * This program tests the construction of a MR-tree index for
 * a certain set of 2D records. We measure the construction time
-* in milliseconds.
+* in nanoseconds.
 *
 * @author Matteo Loporchio, 491283
 */

@@ -93,20 +93,36 @@ public final class Hash {
 	}
 
 	/**
+	*	This function computes the hash value of a single skip list entry.
+	*/
+	public static byte[] hashSkipEntry(SkipListEntry entry) {
+		try {
+			MessageDigest digest = MessageDigest.getInstance("SHA-256");
+			ByteArrayOutputStream strm = new ByteArrayOutputStream();
+			Rectangle r = entry.getMBR();
+			byte[] rbuf = ByteBuffer.allocate(64).putDouble(r.lx).
+			putDouble(r.ly).putDouble(r.ux).putDouble(r.uy).array();
+			byte[] ref = entry.getRef(), aggHash = entry.getAggHash();
+			strm.write(((ref != null) ? ref : new byte[1]));
+			strm.write(rbuf);
+			strm.write(((aggHash != null) ? aggHash : new byte[1]));
+			return digest.digest(strm.toByteArray());
+		}
+		catch (Exception e) {
+			System.err.println("Something went wrong while hashing a skip list!");
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
 	*	This function computes the hash value of a skip list.
 	*/
 	public static byte[] hashSkip(SkipListEntry[] skip) {
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
 			ByteArrayOutputStream strm = new ByteArrayOutputStream();
-			for (int i = 0; i < skip.length; i++) {
-				Rectangle r = skip[i].getMBR();
-				byte[] rbuf = ByteBuffer.allocate(64).putDouble(r.lx).
-				putDouble(r.ly).putDouble(r.ux).putDouble(r.uy).array();
-				strm.write(skip[i].getRef());
-				strm.write(rbuf);
-				strm.write(skip[i].getMBRHash());
-			}
+			for (int i = 0; i < skip.length; i++) strm.write(hashSkipEntry(skip[i]));
 			return digest.digest(strm.toByteArray());
 		}
 		catch (Exception e) {

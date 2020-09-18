@@ -17,19 +17,23 @@ JC = javac
 CLASSES = \
 	Block.java \
 	Blockchain.java \
+	BlockchainRes.java \
+	BlockRes.java \
 	Geometry.java \
 	Hash.java \
 	MRTree.java \
 	MRTreeNode.java \
+	Pair.java \
 	Point.java \
 	Query.java \
 	Rectangle.java \
 	SkipList.java \
 	SkipListEntry.java \
-	TestChain.java \
 	TestIndex.java \
 	TestQuery.java \
+	TestSkip.java \
 	Utility.java \
+	VBlock.java \
 	VContainer.java \
 	VLeaf.java \
 	VObject.java \

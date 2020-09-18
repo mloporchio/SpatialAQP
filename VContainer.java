@@ -13,7 +13,7 @@ public class VContainer implements VObject {
   private List<VObject> list;
 
   /**
-  * 
+  *
   */
   public VContainer() {
     list = new ArrayList<VObject>();

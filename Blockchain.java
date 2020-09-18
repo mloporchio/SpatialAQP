@@ -8,6 +8,7 @@ import java.util.HashMap;
 * @author	Matteo Loporchio, 491283
 */
 public class Blockchain {
+
   /**
   * Page capacity for the index inside each block.
   */
@@ -100,13 +101,17 @@ public class Blockchain {
   * Creates a new block containing the and appends it to the chain.
   * @return the hash value of the new block
   */
-  public byte[] append(List<Point> content) throws Exception {
+  public BlockRes append(List<Point> content) throws Exception {
     // Build the MR-tree index.
+    long idxS = System.nanoTime();
     MRTreeNode index = MRTree.buildPacked(content, c);
 		byte[] indexHash = index.getHash();
+    long idxE = System.nanoTime();
     // Build the skip list index.
+    long skipS = System.nanoTime();
     SkipListEntry[] skip = SkipList.buildSkip(this, m);
-    byte[] skipHash = null;
+    byte[] skipHash = Hash.hashSkip(skip);
+    long skipE = System.nanoTime();
     // Create the new block and compute its hash.
     int id = getSize()+1;
     Block b = new Block(last, indexHash, skipHash, index, skip, content, id);
@@ -115,7 +120,7 @@ public class Blockchain {
 		last = h;
 		storage.put(h, b);
     // Return the hash of the new block.
-    return h;
+    return new BlockRes(h, idxE-idxS, skipE-skipS);
   }
 
 }

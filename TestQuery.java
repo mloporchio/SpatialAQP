@@ -1,8 +1,12 @@
 import java.util.*;
 
 /**
-* Run this program with the following parameters:
+* This program can be used to test the MR-tree index query and verification
+* algorithms.
+*
+* To run it, the following parameters are required:
 * <filename> <capacity> <xmin> <ymin> <xmax> <ymax>
+*
 * @author Matteo Loporchio, 491283
 */
 public class TestQuery {
@@ -12,7 +16,7 @@ public class TestQuery {
       String filename = args[0];
       // Read the page capacity from input.
       int c = Integer.parseInt(args[1]);
-      //
+      // Read the vertices of the query rectangle.
       double xmin = Double.parseDouble(args[2]),
       ymin = Double.parseDouble(args[3]),
       xmax = Double.parseDouble(args[4]),
@@ -26,23 +30,25 @@ public class TestQuery {
       long cend = System.nanoTime();
       // Query the index.
       long qstart = System.nanoTime();
-      VObject vo = Query.treeSearchRec(T, q);
+      VObject vo = Query.treeSearchIt(T, q);
       long qend = System.nanoTime();
       // Verify the results.
       long vstart = System.nanoTime();
-      VResult vr = Query.verify(vo);
+      VResult vr = Query.verifyIt(vo);
       long vend = System.nanoTime();
       // Print the output information.
-      System.out.println("Root hash :\t\t" +
+      System.out.println("Root hash: " +
       Hash.bytesToHex(T.getHash()));
-      System.out.println("Reconstructed hash :\t" +
+      System.out.println("Reconstructed hash: " +
       Hash.bytesToHex(vr.getHash()));
       System.out.println("Index construction time: "
       + (cend - cstart) + " ns");
       System.out.println("Query time: " + (qend - qstart) + " ns");
       System.out.println("Verification time: "
       + (vend - vstart) + " ns");
-      System.out.println("Matching records: " + vr.getContent().size());
+      System.out.println("Returned records: " + vr.getContent().size());
+      List<Point> matching = Query.filter(vr.getContent(), q);
+      System.out.println("Matching records: " + matching.size());
     }
     catch (Exception e) {
       System.err.println("Something went wrong!");

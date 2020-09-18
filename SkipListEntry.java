@@ -20,11 +20,6 @@ public class SkipListEntry {
   private Rectangle MBR;
 
   /**
-  * Hash of the MBR of all skipped blocks.
-  */
-  private byte[] MBRHash;
-
-  /**
   * Aggregate hash of all skipped blocks.
   */
   private byte[] aggHash;
@@ -35,7 +30,6 @@ public class SkipListEntry {
   public SkipListEntry() {
     this.ref = null;
     this.MBR = Geometry.EMPTY_RECT;
-    this.MBRHash = Hash.hashRectangle(this.MBR);
     this.aggHash = null;
   }
 
@@ -66,16 +60,7 @@ public class SkipListEntry {
   */
   public void setMBR(Rectangle MBR) {
     this.MBR = MBR;
-    this.MBRHash = Hash.hashRectangle(MBR);
   }
-
-  /**
-  *
-  */
-  public byte[] getMBRHash() {
-    return MBRHash;
-  }
-
 
   /**
   *

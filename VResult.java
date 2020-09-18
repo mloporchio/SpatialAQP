@@ -23,6 +23,15 @@ public class VResult {
   /**
   *
   */
+  public VResult() {
+    this.content = null;
+    this.MBR = null;
+    this.hash = null;
+  }
+
+  /**
+  *
+  */
   public VResult(List<Point> content, Rectangle MBR, byte[] hash) {
     this.content = content;
     this.MBR = MBR;
