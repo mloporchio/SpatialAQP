@@ -4,8 +4,9 @@ import java.util.*;
 * This program can be used to test the MR-tree index query and verification
 * algorithms.
 *
-* To run it, the following parameters are required:
-* <filename> <capacity> <xmin> <ymin> <xmax> <ymax>
+* In order to run it, the following parameters are required:
+*
+*   <filename> <capacity> <xmin> <ymin> <xmax> <ymax>
 *
 * @author Matteo Loporchio, 491283
 */

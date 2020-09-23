@@ -1,8 +1,9 @@
 import java.util.*;
 
 /**
-* This class represents the skip list data structure that is
-* included in each block to speed up the lookup process.
+* This class contains an implementation of the algorithm that constructs
+* the skip list data structure.
+*
 * @author Matteo Loporchio, 491283
 */
 public final class SkipList {
@@ -13,7 +14,7 @@ public final class SkipList {
   public static final int DEFAULT_SIZE = 8;
 
   /**
-  * Constructs the skip list for the last block of the chain.
+  * This method constructs the skip list for the last block of the chain.
   * @param b the blockchain
   * @param m number of entries for the skip list
   * @return an array with the skip list entries
@@ -30,13 +31,13 @@ public final class SkipList {
     // Otherwise we obtain a reference to the last block.
     Block curr = b.getBlock(last);
     Rectangle currRect = curr.getIndex().getMBR();
-    skip[0].setMBR(currRect);
-    //
+    // We update the cache with the hash of the last block.
     b.addToCache(last);
     // If the last block of the chain is also the only one we are done.
     if (curr.getPrev() == null) return skip;
     // Otherwise the first entry will point to block i-2.
     skip[0].setRef(curr.getPrev());
+    skip[0].setMBR(currRect);
     skip[0].setAggHash(last);
     // Now we must fill the other entries...
     for (int i = 1; i < skip.length; i++) {

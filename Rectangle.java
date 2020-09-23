@@ -1,6 +1,7 @@
 /**
 * This class represents a rectangle, a 2D element which
 *	is characterized by its lower-left and upper-right vertices.
+*
 * @author Matteo Loporchio, 491283
 */
 public class Rectangle implements Comparable<Rectangle> {

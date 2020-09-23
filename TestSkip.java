@@ -5,7 +5,9 @@ import java.util.*;
 * We read a blockchain from a binary file and for each block we construct
 * a skip list. We measure the average construction time in nanoseconds.
 *
-* Run this program with <filename> <page capacity> <skip size> as parameters.
+* In order to run it, the following parameters are required:
+*
+*   <filename> <page capacity> <skip size>
 *
 * @author Matteo Loporchio, 491283
 */

@@ -1,5 +1,6 @@
 /**
 * This class represents a 2D point, our basic geometric entity.
+*
 * @author	Matteo Loporchio, 491283
 */
 public class Point implements Comparable<Point> {
@@ -26,7 +27,7 @@ public class Point implements Comparable<Point> {
 	/**
 	*	Comparison function.
 	*	@param p the point to be compared with the current one
-	*	@return an integer
+	*	@return an integer representing the result of the comparison
 	*/
 	public int compareTo(Point p) {
 		int s = Double.compare(this.x, p.x);

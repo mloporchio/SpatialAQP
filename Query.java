@@ -2,6 +2,9 @@
 import java.util.*;
 
 /**
+* This class contains the implementation of the spatial query and verification
+* algorithms, together with the lookup method to retrieve matching records
+* along the entire chain.
 *
 * @author Matteo Loporchio, 491283
 */
@@ -23,9 +26,9 @@ public final class Query {
   }
 
   /**
+  * This is a recursive version of the spatial query algorithm.
   * This method can be used to query the MR-tree index in order
   * to retrieve all points that belong to the query rectangle.
-  * The search process is recursive.
   * @param T the root of the MR-tree
   * @param query the query rectangle
   * @return a VO for the root
@@ -53,9 +56,9 @@ public final class Query {
   }
 
   /**
+  * This is an iterative version of the spatial query algorithm.
   * This method can be used to query the MR-tree index in order
   * to retrieve all points that belong to the query rectangle.
-  * The search process is iterative.
   * @param T the root of the MR-tree
   * @param query the query rectangle
   * @return a VO for the root
@@ -88,7 +91,13 @@ public final class Query {
   }
 
   /**
-  * Verification algorithm.
+  * This is a recursive version of the spatial verification algorithm.
+  * The method can be used to reconstruct the root of the MR-tree index
+  * from a given verification object. The output of this method is a
+  * <code>VResult</code> object that contains the reconstructed result set
+  * together with the bounding rectangle and digest of the root node.
+  * @param vo a verification object
+  * @return the reconstructed information
   */
   public static VResult verify(VObject vo) {
     // Reconstruct a leaf node.
@@ -127,7 +136,13 @@ public final class Query {
 
 
   /**
-  *
+  * This is an iterative version of the spatial verification algorithm.
+  * The method can be used to reconstruct the root of the MR-tree index
+  * from a given verification object. The output of this method is a
+  * <code>VResult</code> object that contains the reconstructed result set
+  * together with the bounding rectangle and digest of the root node.
+  * @param vo a verification object
+  * @return the reconstructed information
   */
   public static VResult verifyIt(VObject vo) {
     VResult result = null;
@@ -200,16 +215,23 @@ public final class Query {
   }
 
 
-
   /**
-  *
+  * This function implements the lookup algorithm.
+  * The method traverses the entire blockchain with the help of skip lists
+  * and generates a verification object for each visited block.
+  * Verification objects for visited blocks are grouped together in a single
+  * object which is returned as a result.
+  * @param b reference to the blockchain object
+  * @param query query rectangle
+  * @return the verification object for the whole chain and the number of
+  * visited blocks
   */
-  public static VObject lookup(Blockchain b, Rectangle query) {
+  public static Pair<VObject, Integer> lookup(Blockchain b, Rectangle query) {
     VContainer result = new VContainer();
     byte[] curr = b.getLast();
+    int count = 0;
     while (curr != null) {
       Block currBlock = b.getBlock(curr);
-      Rectangle currRect = currBlock.getIndex().getMBR();
       SkipListEntry[] skip = currBlock.getSkip();
       SkipListEntry e = null;
       // We inspect the current block to find matching records.
@@ -220,7 +242,8 @@ public final class Query {
         if (skip[j].getRef() == null) continue;
         // The search terminates if we find an entry whose MBR
         // does not intersect the query rectangle.
-        if (!Geometry.intersect(currRect, query)) {
+        Rectangle rect = skip[j].getMBR();
+        if (!Geometry.intersect(rect, query)) {
           e = skip[j];
           break;
         }
@@ -240,6 +263,24 @@ public final class Query {
       }
       // Update the content of the VO.
       result.append(new VBlock(currVO, e, entryHashes));
+      count++;
+    }
+    return new Pair<>(result, count);
+  }
+
+  /**
+  * This function can be used to extract the set of returned records
+  * from the verification object returned by the lookup algorithm.
+  * @param vo verification object
+  * @return list of records
+  */
+  public static List<Point> extract(VObject vo) {
+    List<Point> result = new ArrayList<>();
+    VContainer cont = ((VContainer) vo);
+    //System.out.println("container size = " + cont.size());
+    for (int i = 0; i < cont.size(); i++) {
+      VResult vr = verifyIt(cont.get(i));
+      result.addAll(vr.getContent());
     }
     return result;
   }

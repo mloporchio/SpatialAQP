@@ -5,8 +5,8 @@ import java.util.*;
 
 /**
 *	This class contains several methods to compute the hash values
-*	of geometric entities (e.g. points and rectangles) and blockchain
-*	elements (e.g. blocks, skip lists).
+*	of geometric entities (e.g. points and rectangles) and data structures
+*	(e.g. blocks, MR-trees, skip lists).
 *	@author Matteo Loporchio, 491283
 */
 public final class Hash {
@@ -33,7 +33,7 @@ public final class Hash {
 	/**
 	*	This function computes the hash value of a list of 2D points.
 	*	@param pts the list of points to be hashed
-	*	@return an array of bytes representing the hash value
+	*	@return the hash value of all points in the list
 	*/
 	public static byte[] hashPoints(List<Point> pts) {
 		try {
@@ -51,6 +51,8 @@ public final class Hash {
 
 	/**
 	*	This function computes the hash value of a rectangle.
+	*	@param r a rectangle
+	*	@return the digest of the input rectangle
 	*/
 	public static byte[] hashRectangle(Rectangle r) {
 		try {
@@ -67,9 +69,10 @@ public final class Hash {
 	}
 
 	/**
-	*	This function computes the hash value of a list of nodes.
-	*	@param
-	*	@return
+	*	This function computes the hash value of a node,
+	*	starting from its children.
+	*	@param children the list of child nodes
+	*	@return the digest of the node
 	*/
 	public static byte[] hashNode(List<MRTreeNode> children) {
 		try {
@@ -94,6 +97,8 @@ public final class Hash {
 
 	/**
 	*	This function computes the hash value of a single skip list entry.
+	*	@param entry a reference to the entry
+	*	@return the digest of the entry
 	*/
 	public static byte[] hashSkipEntry(SkipListEntry entry) {
 		try {
@@ -117,6 +122,8 @@ public final class Hash {
 
 	/**
 	*	This function computes the hash value of a skip list.
+	*	@param skip a reference to the skip list
+	*	@return the digest of the skip list
 	*/
 	public static byte[] hashSkip(SkipListEntry[] skip) {
 		try {
@@ -134,6 +141,13 @@ public final class Hash {
 
 	/**
 	*	This function computes the hash value of a block.
+	*	The hash value of a block is obtained by concatenating:
+	*		(1) the hash of the previous block
+	*		(2) the hash of the root of the MR-tree index
+	*		(3) the hash of the skip list
+	*		(4) the hash value of all points in the block
+	*	@param b a block of the chain
+	*	@return the hash value of the block
 	*/
 	public static byte[] hashBlock(Block b) {
 		try {
@@ -153,7 +167,10 @@ public final class Hash {
 	}
 
 	/**
-	*
+	*	This function returns the digest of the concatenation of all
+	*	the hash values in the input list.
+	*	@param hashes list of hash values
+	*	@return the hash value of the concatenation of all values in the list
 	*/
 	public static byte[] aggregate(List<byte[]> hashes) {
 		// If the list contains only one hash value, return it.
@@ -173,7 +190,11 @@ public final class Hash {
 	}
 
 	/**
-	*
+	*	Given a list of hash values and an integer i, this function
+	*	returns the digest of the concatenation of the first 2^i hash values.
+	*	@param hashes list of hash values
+	*	@param i an integer value
+	*	@return the hash value of the concatenation of the first 2^i values
 	*/
 	public static byte[] aggregate(List<byte[]> hashes, int i) {
 		int j = ((int) Math.pow(2, i)) - 1;
@@ -182,11 +203,17 @@ public final class Hash {
 	}
 
 	/**
-	*
+	*	This function can be used to reconstruct the hash of a MR-tree node
+	*	starting from the list of minimum bounding rectangles
+	*	and the list of digests of its children.
+	*	@param rects the list of rectangles of the children
+	* @param hashes the list of hash values of the children
+	*	@return the digest of the node. We return a null value if the input
+	*	lists do not have the same length.
 	*/
 	public static byte[] reconstruct(List<Rectangle> rects, List<byte[]> hashes)
 	{
-		//
+		// It is required that the two lists have the same length.
 		if (rects.size() != hashes.size()) return null;
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -209,8 +236,8 @@ public final class Hash {
 
 	/**
 	* Converts an array of bytes to a human-readable hexadecimal string.
-	*	@param hash
-	*	@return
+	*	@param hash array of bytes
+	*	@return a readable string representing the content of the array
 	*/
 	public static String bytesToHex(byte[] hash) {
 		StringBuffer hexString = new StringBuffer();

@@ -7,7 +7,9 @@ import java.nio.file.Paths;
 import java.util.*;
 
 /**
-* This class contains a set of static utility methods
+* This class contains a set of static utility methods that can be used to
+* load blockchains and sets of records from files. 
+*
 * @author	Matteo Loporchio, 491283
 */
 public final class Utility {
@@ -67,9 +69,7 @@ public final class Utility {
     return new BlockchainRes(chain, indexAvg/nblocks, skipAvg/nblocks);
   }
 
-  /**
-  *
-  */
+  /*
   public static BlockchainRes readChainLarge(String filename, int c, int m)
   throws Exception {
     long indexAvg = 0, skipAvg = 0;
@@ -106,8 +106,7 @@ public final class Utility {
     is.close();
     return new BlockchainRes(chain, indexAvg/nblocks, skipAvg/nblocks);
   }
-
-
+  */
 
   /**
   * This function chops a list into sublists of a given length.

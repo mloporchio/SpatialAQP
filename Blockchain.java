@@ -4,7 +4,9 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
-* This class implements the blockchain.
+* This class implements the blockchain data structure.
+* Blocks can be accessed by means of their hash value, which must be
+* known in advance.
 * @author	Matteo Loporchio, 491283
 */
 public class Blockchain {
@@ -31,17 +33,22 @@ public class Blockchain {
   private byte[] last;
 
   /**
-  *
+  * This is the hash cache. It is implemented as a list that
+  * contains the hash values of the last <code>maxSize</code> blocks.
+  * It is used to compute the skip list for each new block.
   */
   private List<byte[]> cache;
 
   /**
-  *
+  * This is the maximum number of hash values that can be stored in
+  * the <code>cache</code> data structure.
   */
   private int maxSize;
 
   /**
-  * This is the default constructor for the class.
+  * This is the default constructor for the Blockchain class.
+  * @param c page capacity for the index of each block
+  * @param m size of the skip list for each block
   */
 	public Blockchain(int c, int m) {
     this.c = c;
@@ -79,7 +86,9 @@ public class Blockchain {
   }
 
   /**
-  *
+  * Returns a reference to the cache storing the hash values of
+  * the last <code>maxSize</code> blocks.
+  * @return reference to the cache
   */
   public List<byte[]> getCache() {
     return cache;
@@ -87,7 +96,8 @@ public class Blockchain {
 
 
   /**
-  *
+  * Updates the cache with a new hash value.
+  * @param ref hash value of a new block
   */
   public void addToCache(byte[] ref) {
     int size = cache.size();
@@ -99,6 +109,7 @@ public class Blockchain {
 
   /**
   * Creates a new block containing the and appends it to the chain.
+  * @param content the set of points to be included in the new block
   * @return the hash value of the new block
   */
   public BlockRes append(List<Point> content) throws Exception {

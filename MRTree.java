@@ -1,10 +1,12 @@
-/**
-* File:		MRTree.java
-* Author:	Matteo Loporchio, 491283
-*/
-
 import java.util.*;
 
+/**
+* In this class we have implemented a static method that can be used
+* to build the MR-tree index from a given set of data points.
+* The method is based on the packed MR-tree algorithm.
+*
+* @author	Matteo Loporchio, 491283
+*/
 public final class MRTree {
 
   /**
@@ -14,11 +16,10 @@ public final class MRTree {
 
   /**
   * Constructs a MR-tree index from a given list of points with
-  * the packed algorithm.
-  * The nodes of the tree have a fixed capacity.
+  * the packed algorithm. The nodes of the tree have a fixed capacity.
   * @param pts list of points
   * @param c page capacity
-  * @return a MR-tree index
+  * @return the root node of the constructed MR-tree index
   */
   public static MRTreeNode buildPacked(List<Point> pts, int c) {
     List<MRTreeNode> current = new ArrayList<MRTreeNode>();

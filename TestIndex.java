@@ -2,8 +2,11 @@ import java.util.*;
 
 /**
 * This program tests the construction of a MR-tree index for
-* a certain set of 2D records. We measure the construction time
-* in nanoseconds.
+* a certain set of 2D records.
+*
+* In order to run it, the following parameters are required:
+*
+*   <filename> <capacity>
 *
 * @author Matteo Loporchio, 491283
 */

@@ -30,6 +30,7 @@ CLASSES = \
 	SkipList.java \
 	SkipListEntry.java \
 	TestIndex.java \
+	TestLookup.java \
 	TestQuery.java \
 	TestSkip.java \
 	Utility.java \

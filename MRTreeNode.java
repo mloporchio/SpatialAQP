@@ -2,17 +2,42 @@ import java.util.*;
 
 /**
 *	This class implements a generic MR-tree node, which can be
-*	either a leaf or an internal node.
+*	either a leaf or an internal node. Leaf nodes contain a set of records
+*	while internal nodes contain a list of children.
+*
 * @author	Matteo Loporchio, 491283
 */
 public class MRTreeNode implements Comparable<MRTreeNode> {
+	/**
+	*	This is the minimum bounding rectangle of the node.
+	*	It is obtained as the minimum bounding union of the rectangles of
+	*	the children, or, in the case of a leaf, as the bounding rectangle
+	*	of all points contained in the current node.
+	*/
 	private Rectangle MBR;
+
+	/**
+	* This is the digest of the node.
+	*/
 	private byte[] hash;
+
+	/**
+	*	This is a reference to the list of points contained in the node.
+	*/
 	private List<Point> data;
+
+	/**
+	*	This is the list of children for the current node.
+	*/
 	private List<MRTreeNode> children;
 
 	/**
-	*	Constructor for the MR-tree node.
+	*	This is the default constructor for the MRTreeNode class.
+	*	@param MBR the minimum bounding rectangle of the node
+	*	@param hash the digest of the node
+	* @param data the list of points contained in the node (if it is a leaf)
+	*	@param children the list of child nodes for the current node
+	*	(in the case of an internal node)
 	*/
 	public MRTreeNode(Rectangle MBR, byte[] hash, List<Point> data,
 	List<MRTreeNode> children) {
