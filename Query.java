@@ -277,9 +277,9 @@ public final class Query {
   public static List<Point> extract(VObject vo) {
     List<Point> result = new ArrayList<>();
     VContainer cont = ((VContainer) vo);
-    //System.out.println("container size = " + cont.size());
     for (int i = 0; i < cont.size(); i++) {
-      VResult vr = verifyIt(cont.get(i));
+      VBlock vb = ((VBlock) cont.get(i));
+      VResult vr = verifyIt(vb.block);
       result.addAll(vr.getContent());
     }
     return result;
